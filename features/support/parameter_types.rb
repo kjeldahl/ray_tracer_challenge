@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'canvas'
 require 'color'
 require 'tuple'
 
@@ -65,4 +66,11 @@ ParameterType(
   regexp: /tuple<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
   type: Tuple,
   transformer: ->(x, y, z, w) { Tuple.new(aton(x), aton(y), aton(z), aton(w)) }
+)
+
+ParameterType(
+  name: 'canvas',
+  regexp: /canvas<(\d+), (\d+)>/,
+  type: Canvas,
+  transformer: ->(width, height) { Canvas.new(aton(width), aton(height)) }
 )

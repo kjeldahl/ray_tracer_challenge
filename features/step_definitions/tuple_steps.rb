@@ -8,17 +8,10 @@ module TupleHelper
     expect(v1.y).to be_within(0.0001).of(v2.y)
     expect(v1.z).to be_within(0.0001).of(v2.z)
   end
-
-  def i_get(s)
-    instance_variable_get("@#{s}")
-  end
-
-  def i_set(s, v)
-    instance_variable_set("@#{s}", v)
-  end
 end
 
 World(TupleHelper)
+World(IVarHelper)
 
 Given('{word} ← {tuple}') do |var, tuple|
   i_set(var,  tuple)

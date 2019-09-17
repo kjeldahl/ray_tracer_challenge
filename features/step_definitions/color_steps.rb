@@ -1,6 +1,6 @@
 require 'color'
 
-module TupleHelper
+module ColorHelper
   def color_approximately_equal(c1, c2)
     expect(c1.red).to be_within(0.0001).of(c2.red)
     expect(c1.green).to be_within(0.0001).of(c2.green)
@@ -8,7 +8,7 @@ module TupleHelper
   end
 end
 
-World(TupleHelper)
+World(ColorHelper)
 
 Given('{word} ← {color}') do |var, color|
   i_set(var, color)
