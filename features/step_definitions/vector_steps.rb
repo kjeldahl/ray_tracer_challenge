@@ -25,9 +25,17 @@ Then("normalize<v> = vector<{number}, {number}, {number}>") do |x, y, z|
 end
 
 Then("normalize<v> = approximately vector<{number}, {number}, {number}>") do |x, y, z|
-  approximately_equal(@v.normalize, Tuple.vector(x, y, z))
+  vector_approximately_equal(@v.normalize, Tuple.vector(x, y, z))
 end
 
 Then("magnitude<norm> = {number}") do |magnitude|
   expect(@norm.magnitude).to eq(magnitude)
+end
+
+Then("dot<{word}, {word}> = {int}") do |v1, v2, result|
+  expect(i_get(v1).dot(i_get(v2))).to eq(result)
+end
+
+Then("cross<{word}, {word}> = vector<{int}, {int}, {int}>") do |v1, v2, x, y, z|
+  expect(i_get(v1).cross(i_get(v2))).to eq(Tuple.vector(x, y, z))
 end

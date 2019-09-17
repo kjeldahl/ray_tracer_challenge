@@ -3,7 +3,7 @@
 require 'tuple'
 
 module TupleHelper
-  def approximately_equal(v1, v2)
+  def vector_approximately_equal(v1, v2)
     expect(v1.x).to be_within(0.0001).of(v2.x)
     expect(v1.y).to be_within(0.0001).of(v2.y)
     expect(v1.z).to be_within(0.0001).of(v2.z)

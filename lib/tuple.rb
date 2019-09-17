@@ -23,14 +23,37 @@ class Tuple
     @w = w
   end
 
+  # region Vector methods
   def magnitude
+    raise unless vector?
+
     @magnitude ||= Math.sqrt(x**2 + y**2 + z**2 + w**2)
   end
 
   def normalize
+    raise unless vector?
+
     Tuple.vector(x / magnitude, y / magnitude, z / magnitude)
   end
 
+  def dot(other)
+    raise unless vector? && other.vector?
+
+    x * other.x + y * other.y + z * other.z
+  end
+
+  def cross(other)
+    raise unless vector? && other.vector?
+
+    Tuple.vector(
+      y * other.z - z * other.y,
+      z * other.x - x * other.z,
+      x * other.y - y * other.x
+    )
+  end
+
+  # endregion
+  #
   def point?
     w.eql? 1.0
   end
