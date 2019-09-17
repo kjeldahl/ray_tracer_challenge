@@ -17,6 +17,51 @@ class MyMatrix
                                                   [0.0, 0.0, 0.0, 1.0]
                                                 ])
     end
+
+    def translation(x, y, z)
+      MyMatrix.new(4, 4, [
+        [1.0, 0.0, 0.0, x],
+        [0.0, 1.0, 0.0, y],
+        [0.0, 0.0, 1.0, z],
+        [0.0, 0.0, 0.0, 1.0]
+      ])
+    end
+
+    def scaling(x, y, z)
+      MyMatrix.new(4, 4, [
+        [x, 0.0, 0.0, 0.0],
+        [0.0, y, 0.0, 0.0],
+        [0.0, 0.0, z, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+      ])
+    end
+
+    def rotation_x(radi)
+      MyMatrix.new(4, 4, [
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, Math.cos(radi), -Math.sin(radi), 0.0],
+        [0.0, Math.sin(radi), Math.cos(radi), 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+      ])
+    end
+
+    def rotation_y(radi)
+      MyMatrix.new(4, 4, [
+        [Math.cos(radi), 0.0, Math.sin(radi), 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [0.0, 0.0, Math.cos(radi), 0.0],
+        [-Math.sin(radi), 0.0, 0.0, 1.0]
+      ])
+    end
+
+    def rotation_z(radi)
+      MyMatrix.new(4, 4, [
+        [Math.cos(radi), -Math.sin(radi), 0.0, 0.0],
+        [Math.sin(radi), Math.cos(radi), 0.0, 0.0],
+        [0.0, 0.0, 1.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+      ])
+    end
   end
 
   def initialize(width, height, data)

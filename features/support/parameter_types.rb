@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'canvas'
 require 'color'
+require 'my_matrix'
 require 'tuple'
 
 NUMBER_REGEXP = "(√?[-+]?(\\d+(\\.\\d+)?|\\.\\d+))" # Must have capture group on entire expression
@@ -76,3 +77,26 @@ ParameterType(
   type: Canvas,
   transformer: ->(width, height) { Canvas.new(Integer(width), Integer(height)) }
 )
+
+ParameterType(
+  name: 'translation',
+  regexp: /translation<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
+  type: MyMatrix,
+  transformer: ->(x, y, z) { MyMatrix.translation(aton(x), aton(y), aton(z)) }
+)
+
+ParameterType(
+  name: 'scaling',
+  regexp: /scaling<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
+  type: MyMatrix,
+  transformer: ->(x, y, z) { MyMatrix.scaling(aton(x), aton(y), aton(z)) }
+)
+
+ParameterType(
+  name: 'rotation',
+  # rotation_x<π /4>
+  regexp: /rotation_([xyz])<π \/ #{NUMBER_REGEXP}>/,
+  type: MyMatrix,
+  transformer: ->(axis, radi) { MyMatrix.send("rotation_#{axis}".to_sym, Math::PI / aton(radi)) }
+)
+

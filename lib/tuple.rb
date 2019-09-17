@@ -120,10 +120,10 @@ class Tuple
 
   def ==(other)
     other.class == self.class &&
-      other.x == x &&
-      other.y == y &&
-      other.z == z &&
-      other.w == w
+      other.x.round(5) == x.round(5) &&
+      other.y.round(5) == y.round(5) &&
+      other.z.round(5) == z.round(5) &&
+      other.w.round(5) == w.round(5)
   end
 
   alias eql? ==
