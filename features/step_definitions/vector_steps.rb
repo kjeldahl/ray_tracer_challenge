@@ -1,16 +1,7 @@
 require 'tuple'
 
-Given("v ← vector<{number}, {number}, {number}>") do |x, y, z|
-  @v = Tuple.vector(x, y, z)
-end
-
-Given("v{int} ← vector<{number}, {number}, {number}>") do |idx, x, y, z|
-  @vs ||= []
-  @vs[idx] = Tuple.vector(x, y, z)
-end
-
-Given("zero ← vector<0, 0, 0>") do
-  @zero_vector = Tuple.vector(0.0, 0.0, 0.0)
+Given("{word} ← vector<{number}, {number}, {number}>") do |var, x, y, z|
+  i_set(var, Tuple.vector(x, y, z))
 end
 
 When("norm ← normalize<v>") do
@@ -21,12 +12,8 @@ Then("v = tuple<{number}, {number}, {number}, {number}>") do |x, y, z, w|
   expect(@v).to eq(Tuple.build(x, y, z, w))
 end
 
-Then("v{int} - v{int} = vector<{number}, {number}, {number}>") do |idx1, idx2, x, y, z|
-  expect(@vs[idx1] - @vs[idx2]).to eq(Tuple.vector(x, y, z))
-end
-
-Then("zero - v = vector<{number}, {number}, {number}>") do |x, y, z|
-  expect(@zero_vector - @v).to eq(Tuple.vector(x, y, z))
+Then("{word} - {word} = vector<{number}, {number}, {number}>") do |var1, var2, x, y, z|
+  expect(i_get(var1) - i_get(var2)).to eq(Tuple.vector(x, y, z))
 end
 
 Then("magnitude<v> = {number}") do |magnitude|

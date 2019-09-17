@@ -2,31 +2,34 @@
 
 require 'tuple'
 
-module ApproximationHelper
+module TupleHelper
   def approximately_equal(v1, v2)
     expect(v1.x).to be_within(0.0001).of(v2.x)
     expect(v1.y).to be_within(0.0001).of(v2.y)
     expect(v1.z).to be_within(0.0001).of(v2.z)
   end
+
+  def i_get(s)
+    instance_variable_get("@#{s}")
+  end
+
+  def i_set(s, v)
+    instance_variable_set("@#{s}", v)
+  end
 end
 
-World(ApproximationHelper)
+World(TupleHelper)
 
-Given('a ← tuple<{number}, {number}, {number}, {number}>') do |x, y, z, w|
-  @a = Tuple.build(x, y, z, w)
+Given('{word} ← tuple<{number}, {number}, {number}, {number}>') do |var, x, y, z, w|
+  i_set(var,  Tuple.build(x, y, z, w))
 end
 
-Given('a{int} ← tuple<{number}, {number}, {number}, {number}>') do |idx, x, y, z, w|
-  @as ||= []
-  @as[idx] = Tuple.build(x, y, z, w)
+Then('{word} {operator} {word} = tuple<{number}, {number}, {number}, {number}>') do |var1, op, var2, x, y, z, w|
+  expect(i_get(var1).send(op, i_get(var2))).to eq(Tuple.build(x, y, z, w))
 end
 
-Then('a{int} + a{int} = tuple<{number}, {number}, {number}, {number}>') do |idx1, idx2, x, y, z, w|
-  expect(@as[idx1] + @as[idx2]).to eq(Tuple.build(x, y, z, w))
-end
-
-Then('a{int} - a{int} = tuple<{number}, {number}, {number}, {number}>') do |idx1, idx2, x, y, z, w|
-  expect(@as[idx1] - @as[idx2]).to eq(Tuple.build(x, y, z, w))
+Then('{word} {operator} {number} = tuple<{number}, {number}, {number}, {number}>') do |var, operator, scalar, x, y, z, w|
+  expect(i_get(var).send(operator, scalar)).to eq(Tuple.build(x, y, z, w))
 end
 
 Then('-a = tuple<{number}, {number}, {number}, {number}>') do |x, y, z, w|
@@ -53,6 +56,3 @@ Then('a is a vector') do
   expect(@a.vector?).to eq(true)
 end
 
-Then('a {operator} {number} = tuple<{number}, {number}, {number}, {number}>') do |operator, scalar, x, y, z, w|
-  expect(@a.send(operator, scalar)).to eq(Tuple.build(x, y, z, w))
-end
