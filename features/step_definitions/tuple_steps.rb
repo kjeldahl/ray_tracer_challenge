@@ -20,39 +20,43 @@ end
 
 World(TupleHelper)
 
-Given('{word} ← tuple<{number}, {number}, {number}, {number}>') do |var, x, y, z, w|
-  i_set(var,  Tuple.build(x, y, z, w))
+Given('{word} ← {tuple}') do |var, tuple|
+  i_set(var,  tuple)
 end
 
-Then('{word} {operator} {word} = tuple<{number}, {number}, {number}, {number}>') do |var1, op, var2, x, y, z, w|
-  expect(i_get(var1).send(op, i_get(var2))).to eq(Tuple.build(x, y, z, w))
+Then('{word} {operator} {word} = {tuple}') do |var1, op, var2, tuple|
+  expect(i_get(var1).send(op, i_get(var2))).to eq(tuple)
 end
 
-Then('{word} {operator} {number} = tuple<{number}, {number}, {number}, {number}>') do |var, operator, scalar, x, y, z, w|
-  expect(i_get(var).send(operator, scalar)).to eq(Tuple.build(x, y, z, w))
+Then('{word} {operator} {number} = {tuple}') do |var, operator, scalar, tuple|
+  expect(i_get(var).send(operator, scalar)).to eq(tuple)
 end
 
-Then('-a = tuple<{number}, {number}, {number}, {number}>') do |x, y, z, w|
-  expect(-@a).to eq(Tuple.build(x, y, z, w))
+Then('-{word} = {tuple}') do |var, tuple|
+  expect(-i_get(var)).to eq(tuple)
 end
 
-Then('a.{axis} = {number}') do |axis, float|
-  expect(@a.send(axis)).to eq(float)
+Then('{word} = {tuple}') do |var, tuple|
+  expect(i_get(var)).to eq(tuple)
 end
 
-Then('a is a point') do
-  expect(@a.point?).to eq(true)
+Then('{word}.{axis} = {number}') do |var, axis, float|
+  expect(i_get(var).send(axis)).to eq(float)
 end
 
-Then('a is not a vector') do
-  expect(@a.vector?).to eq(false)
+Then('{word} is a point') do |var|
+  expect(i_get(var).point?).to eq(true)
 end
 
-Then('a is not a point') do
-  expect(@a.point?).to eq(false)
+Then('{word} is not a vector') do |var|
+  expect(i_get(var).vector?).to eq(false)
 end
 
-Then('a is a vector') do
-  expect(@a.vector?).to eq(true)
+Then('{word} is not a point') do |var|
+  expect(i_get(var).point?).to eq(false)
+end
+
+Then('{word} is a vector') do |var|
+  expect(i_get(var).vector?).to eq(true)
 end
 

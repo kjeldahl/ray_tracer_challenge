@@ -1,13 +1,9 @@
 require 'tuple'
 
-Given('{word} ← point<{number}, {number}, {number}>') do |var, x, y, z|
-  i_set(var,  Tuple.point(x, y, z))
+Given('{word} ← {point}') do |var, point|
+  i_set(var, point)
 end
 
-Then('p = tuple<{number}, {number}, {number}, {number}>') do |x, y, z, w|
-  expect(@p).to eq(Tuple.build(x, y, z, w))
-end
-
-Then('p - v = point<{number}, {number}, {number}>') do |x, y, z|
-  expect(@p - @v).to eq(Tuple.point(x, y, z))
+Then('{word} {operator} {word} = {point}') do |var1, op, var2, point|
+  expect(i_get(var1).send(op, i_get(var2))).to eq(point)
 end

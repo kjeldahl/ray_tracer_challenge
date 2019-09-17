@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 require 'color'
+require 'tuple'
+
 NUMBER_REGEXP = "(√?[-+]?\\d*(\\.\\d+)?)" # Must have capture group on entire expression
 
 # Converts a string matched by NUMBER_REGEXP to either an Integer or a Float
@@ -42,4 +44,25 @@ ParameterType(
   regexp: /color<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
   type: Color,
   transformer: ->(red, green, blue) { Color.new(aton(red), aton(green), aton(blue)) }
+)
+
+ParameterType(
+  name: 'vector',
+  regexp: /vector<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
+  type: Tuple,
+  transformer: ->(x, y, z) { Tuple.vector(aton(x), aton(y), aton(z)) }
+)
+
+ParameterType(
+  name: 'point',
+  regexp: /point<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
+  type: Tuple,
+  transformer: ->(x, y, z) { Tuple.point(aton(x), aton(y), aton(z)) }
+)
+
+ParameterType(
+  name: 'tuple',
+  regexp: /tuple<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
+  type: Tuple,
+  transformer: ->(x, y, z, w) { Tuple.new(aton(x), aton(y), aton(z), aton(w)) }
 )
