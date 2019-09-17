@@ -3,11 +3,13 @@ require 'canvas'
 require 'color'
 require 'tuple'
 
-NUMBER_REGEXP = "(√?[-+]?\\d*(\\.\\d+)?)" # Must have capture group on entire expression
+NUMBER_REGEXP = "(√?[-+]?(\\d+(\\.\\d+)?|\\.\\d+))" # Must have capture group on entire expression
 
 # Converts a string matched by NUMBER_REGEXP to either an Integer or a Float
 def aton(s)
-  n = s.include?('.') ? Float(s.delete('√')) : Integer(s.delete('√'))
+  nn = s.delete('√')
+  nn = nn == "" ? 0 : nn
+  n = Float(nn)
   s.include?('√') ? Math.sqrt(n) : n
 end
 
@@ -72,5 +74,5 @@ ParameterType(
   name: 'canvas',
   regexp: /canvas<(\d+), (\d+)>/,
   type: Canvas,
-  transformer: ->(width, height) { Canvas.new(aton(width), aton(height)) }
+  transformer: ->(width, height) { Canvas.new(Integer(width), Integer(height)) }
 )

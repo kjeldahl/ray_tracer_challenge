@@ -12,6 +12,7 @@ class Canvas
     @max_color = 255
   end
 
+  # TODO: []=(x,y,col)
   def write_pixel(x, y, col)
     return if x < 0 || width <= x
     return if y < 0 || height <= y
@@ -19,6 +20,7 @@ class Canvas
     @pixels[y][x] = col
   end
 
+  # TODO: [](x,y)
   def pixel_at(x, y)
     return if x < 0 || width <= x
     return if y < 0 || height <= y

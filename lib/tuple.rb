@@ -23,6 +23,17 @@ class Tuple
     @w = w
   end
 
+  def [](i)
+    case i
+      when 0; x
+      when 1; y
+      when 2; z
+      when 3; w
+      else
+      raise "A tuple only has 4 elements"
+    end
+  end
+
   # region Vector methods
   def magnitude
     raise unless vector?
