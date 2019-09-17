@@ -8,8 +8,8 @@ When("{word} ← normalize<{word}>") do |var1, var2|
   i_set(var1, i_get(var2).normalize)
 end
 
-Then("{word} - {word} = {vector}") do |var1, var2, vector|
-  expect(i_get(var1) - i_get(var2)).to eq(vector)
+Then("{word} = {vector}") do |var, vector|
+  expect(i_get(var)).to eq(vector)
 end
 
 Then("{word} - {word} = {vector}") do |var1, var2, vector|
