@@ -1,16 +1,17 @@
 # frozen_string_literal: true
+
 require 'canvas'
 require 'color'
 require 'my_matrix'
 require 'tuple'
 
-NUMBER_REGEXP = "(√?[-+]?(\\d+(\\.\\d+)?|\\.\\d+))" # Must have capture group on entire expression
+NUMBER_REGEXP = '(√?[-+]?(\\d+(\\.\\d+)?|\\.\\d+))' # Must have capture group on entire expression
 
 # Converts a string matched by NUMBER_REGEXP to either an Integer or a Float
 def aton(s)
   nn = s.delete('√')
-  nn = nn == "" ? 0 : nn
-  n = Float(nn)
+  nn = nn == '' ? 0 : nn
+  n  = Float(nn)
   s.include?('√') ? Math.sqrt(n) : n
 end
 
@@ -31,7 +32,7 @@ ParameterType(
 
 ParameterType(
   name: 'operator',
-  regexp: /[+\-*\/]/,
+  regexp: %r{[+\-*/]},
   type: Symbol,
   transformer: ->(s) { s.to_sym }
 )
@@ -94,9 +95,14 @@ ParameterType(
 
 ParameterType(
   name: 'rotation',
-  # rotation_x<π /4>
   regexp: /rotation_([xyz])<π \/ #{NUMBER_REGEXP}>/,
   type: MyMatrix,
   transformer: ->(axis, radi) { MyMatrix.send("rotation_#{axis}".to_sym, Math::PI / aton(radi)) }
 )
 
+ParameterType(
+  name: 'shearing',
+  regexp: /shearing<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
+  type: MyMatrix,
+  transformer: ->(xy, xz, yx, yz, zx, zy) { MyMatrix.shearing(aton(xy), aton(xz), aton(yx), aton(yz), aton(zx), aton(zy)) }
+)

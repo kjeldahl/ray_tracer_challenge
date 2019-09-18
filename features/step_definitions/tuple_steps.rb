@@ -17,6 +17,10 @@ Given('{word} ← {tuple}') do |var, tuple|
   i_set(var,  tuple)
 end
 
+When("{word} ← {word} {operator} {word} {operator} {word}") do |var, param1, operator, param2, operator2, param3|
+  i_set(var, i_get(param1).send(operator, i_get(param2)).send(operator2, i_get(param3)))
+end
+
 Then('{word} {operator} {word} = {tuple}') do |var1, op, var2, tuple|
   expect(i_get(var1).send(op, i_get(var2))).to eq(tuple)
 end

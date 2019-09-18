@@ -12,8 +12,8 @@ Then("{word} = {vector}") do |var, vector|
   expect(i_get(var)).to eq(vector)
 end
 
-Then("{word} - {word} = {vector}") do |var1, var2, vector|
-  expect(i_get(var1) - i_get(var2)).to eq(vector)
+Then("{word} {operator} {word} = {vector}") do |var1, operator, var2, vector|
+  expect(i_get(var1).send(operator, i_get(var2))).to eq vector
 end
 
 Then("magnitude<{word}> = {number}") do |var, magnitude|

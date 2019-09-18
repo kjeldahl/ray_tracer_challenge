@@ -62,6 +62,17 @@ class MyMatrix
         [0.0, 0.0, 0.0, 1.0]
       ])
     end
+
+    def shearing(xy, xz, yx, yz, zx, zy)
+      MyMatrix.new(4, 4, [
+        [1.0,  xy,  xz, 0.0],
+        [ yx, 1.0,  yz, 0.0],
+        [ zx,  zy, 1.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+      ])
+    end
+
+
   end
 
   def initialize(width, height, data)
