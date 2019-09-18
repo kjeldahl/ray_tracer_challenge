@@ -4,6 +4,7 @@ require 'canvas'
 require 'color'
 require 'my_matrix'
 require 'tuple'
+require 'sphere'
 
 NUMBER_REGEXP = '(√?[-+]?(\\d+(\\.\\d+)?|\\.\\d+))' # Must have capture group on entire expression
 
@@ -14,6 +15,13 @@ def aton(s)
   n  = Float(nn)
   s.include?('√') ? Math.sqrt(n) : n
 end
+
+ParameterType(
+  name: 'var',
+  regexp: /[a-zA-Z][a-zA-Z_\d]*/,
+  type: String,
+  transformer: ->(s) { s }
+)
 
 ParameterType(
   name: 'number',
@@ -105,4 +113,11 @@ ParameterType(
   regexp: /shearing<#{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}, #{NUMBER_REGEXP}>/,
   type: MyMatrix,
   transformer: ->(xy, xz, yx, yz, zx, zy) { MyMatrix.shearing(aton(xy), aton(xz), aton(yx), aton(yz), aton(zx), aton(zy)) }
+)
+
+ParameterType(
+  name: 'sphere',
+  regexp: /sphere<>/,
+  type: Sphere,
+  transformer: ->(s) { Sphere.new }
 )

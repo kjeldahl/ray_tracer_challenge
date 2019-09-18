@@ -10,26 +10,22 @@ end
 
 World(ColorHelper)
 
-Given('{word} ← {color}') do |var, color|
+Given('{var} ← {color}') do |var, color|
   i_set(var, color)
 end
 
-Then("{word}.{primary_color} = {number}") do |var, p_color, val|
-  expect(i_get(var).send(p_color.to_sym)).to eq val
-end
-
-Then("{word} {operator} {word} = {color}") do |c1, operator, c2, color|
+Then("{var} {operator} {var} = {color}") do |c1, operator, c2, color|
   expect(i_get(c1).send(operator, i_get(c2))).to eq color
 end
 
-Then("{word} {operator} {number} = {color}") do |c1, operator, scalar, color|
+Then("{var} {operator} {number} = {color}") do |c1, operator, scalar, color|
   expect(i_get(c1).send(operator, scalar)).to eq color
 end
 
-Then("{word} {operator} {word} = approximately {color}") do |c1, operator, c2, color|
+Then("{var} {operator} {var} = approximately {color}") do |c1, operator, c2, color|
   color_approximately_equal(i_get(c1).send(operator, i_get(c2)), color)
 end
 
-Then("{word} {operator} {number} = approximately {color}") do |c1, operator, scalar, color|
+Then("{var} {operator} {number} = approximately {color}") do |c1, operator, scalar, color|
   color_approximately_equal(i_get(c1).send(operator, scalar), color)
 end
