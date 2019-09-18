@@ -2,6 +2,12 @@ require 'canvas'
 require 'color'
 require 'tuple'
 
+# Example demonstrating calculations using vectors and points
+#
+# Run:
+#   bundle exec ruby -Ilib -Iexamples -e'require "projectile"; Scene.run'
+# It will output the file 'projectile.ppm' in the CWD
+#
 class Projectile
 
   attr_reader :position, :velocity
