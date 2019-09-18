@@ -25,8 +25,9 @@ class Clock
 
   def draw
     @point = Tuple.point(0.0, 1.0, 0.0)
-    @transform = MyMatrix.translation(50, 50, 0) *
-                 MyMatrix.scaling(45, 45, 1)
+    @transform = MyMatrix.
+                  scale(45, 45, 1).
+                  translate(50, 50, 0)
     (1..12).each do |t|
       rotation = MyMatrix.rotation_z((Math::PI * 2 / 12) * t )
       draw_point = @transform * rotation * @point

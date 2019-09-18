@@ -18,6 +18,7 @@ class MyMatrix
                                                 ])
     end
 
+    # region Tranformation Methods
     def translation(x, y, z)
       MyMatrix.new(4, 4, [
         [1.0, 0.0, 0.0, x],
@@ -63,6 +64,19 @@ class MyMatrix
       ])
     end
 
+    def rotation(axis, radi)
+      case axis
+        when :x
+          rotation_x(radi)
+        when :y
+          rotation_y(radi)
+        when :z
+          rotation_z(radi)
+        else
+        raise "Unknown axis: '#{axis}'"
+      end
+    end
+
     def shearing(xy, xz, yx, yz, zx, zy)
       MyMatrix.new(4, 4, [
         [1.0,  xy,  xz, 0.0],
@@ -72,7 +86,25 @@ class MyMatrix
       ])
     end
 
+    # endregion
 
+    # region Consistent Transformation naming with instances
+    def rotate(axis, radi)
+      rotation(axis, radi)
+    end
+
+    def translate(x, y, z)
+      translation(x, y, z)
+    end
+
+    def scale(x, y, z)
+      scaling(x, y, z)
+    end
+
+    def shear(xy, xz, yx, yz, zx, zy)
+      shearing(xy, xz, yx, yz, zx, zy)
+    end
+    # endregion
   end
 
   def initialize(width, height, data)
@@ -80,6 +112,24 @@ class MyMatrix
     @height = height
     @data   = data
   end
+
+  # region Transformations
+  def rotate(axis, radi)
+    self.class.rotation(axis, radi) * self
+  end
+
+  def translate(x, y, z)
+    self.class.translation(x, y, z) * self
+  end
+
+  def scale(x, y, z)
+    self.class.scaling(x, y, z) * self
+  end
+
+  def shear(xy, xz, yx, yz, zx, zy)
+    self.class.shearing(xy, xz, yx, yz, zx, zy) * self
+  end
+  # endregion
 
   def [](i, j)
     raise if i < 0 || width <= i
