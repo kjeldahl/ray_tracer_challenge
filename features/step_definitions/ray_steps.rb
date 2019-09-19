@@ -15,11 +15,6 @@ When("{var} ← transform<{var}, {var}>") do |var, ray_var, transform_var|
   i_set(var, i_get(ray_var).transform(i_get(transform_var)))
 end
 
-# TODO: Move to general steps
-Then('{var}.{word} = {var}') do |var, attr, var2|
-  expect(i_get(var).send(attr.to_sym)).to eq(i_get(var2))
-end
-
 Then('{var}.origin = {point}') do |var, point|
   expect(i_get(var).origin).to eq(point)
 end

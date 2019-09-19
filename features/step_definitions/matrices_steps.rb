@@ -40,32 +40,8 @@ And("{var} ← inverse<{var}>") do |var1, var2|
   i_set(var1, i_get(var2).inverse)
 end
 
-And("{var} ← {var} {operator} {var}") do |var1, var2, operator, var3|
-  i_set(var1, i_get(var2).send(operator, i_get(var3)))
-end
-
-Then('{var}[{int},{int}] = {number}') do |var, x, y, result|
-  expect(i_get(var).[](x, y)).to eq result
-end
-
-Then("{var}[{int},{int}] = {number}{operator}{number}") do |var, i, j, counter, operator, quotient|
-  expect(i_get(var).[](i, j)).to eq counter.send(operator, quotient)
-end
-
-Then('{var} = {var}') do |var1, var2|
-  expect(i_get(var1)).to eq i_get(var2)
-end
-
-Then('{var} != {var}') do |var1, var2|
-  expect(i_get(var1)).not_to eq i_get(var2)
-end
-
 Then('{var} {operator} {var} is the following {int}x{int} matrix:') do |var1, operator, var2, _width, _height, table|
   expect(i_get(var1).send(operator, i_get(var2))).to eq read_matrix(table)
-end
-
-Then("{var} {operator} {var} = {var}") do |var1, operator, var2, var3|
-  expect(i_get(var1).send(operator, i_get(var2))).to eq i_get(var3)
 end
 
 Then("transpose<{var}> is the following matrix:") do |var, table|
