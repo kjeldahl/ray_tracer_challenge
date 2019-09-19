@@ -9,7 +9,8 @@ class Color
     @blue = blue
   end
 
-  WHITE = Color.new(1.0,1.0,1.0)
+  WHITE = Color.new(1.0, 1.0, 1.0)
+  RED   = Color.new(1.0, 0.0, 0.0)
 
   def +(other)
     Color.new(red + other.red,

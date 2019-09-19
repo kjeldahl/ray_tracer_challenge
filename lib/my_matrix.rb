@@ -149,14 +149,14 @@ class MyMatrix
   end
 
   def determinant
-    # PERF: Cache this value
-    if height == 2 && width == 2
-      self[0, 0] * self[1, 1] - self[0, 1] * self[1, 0]
-    else
-      (0...width).sum do |j|
-        self[0, j] * cofactor(0, j)
+    @determinant ||=
+      if height == 2 && width == 2
+        self[0, 0] * self[1, 1] - self[0, 1] * self[1, 0]
+      else
+        (0...width).sum do |j|
+          self[0, j] * cofactor(0, j)
+        end
       end
-    end
   end
 
   def submatrix(row, column)
@@ -195,6 +195,8 @@ class MyMatrix
   def inverse
     raise "Cannot invert non-invertible matrix" unless invertible?
 
+    return @inverse unless @inverse.nil?
+
     mb = MatrixBuilder.new
     (0...height).each do |i|
       (0...width).each do |j|
@@ -203,7 +205,7 @@ class MyMatrix
       end
     end
 
-    mb.to_matrix(width, height)
+    @inverse = mb.to_matrix(width, height)
   end
 
   def *(other)

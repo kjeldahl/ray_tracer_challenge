@@ -22,4 +22,8 @@ class Intersections
   def [](idx)
     @intersections[idx]
   end
+
+  def any?
+    @intersections.count > 0
+  end
 end

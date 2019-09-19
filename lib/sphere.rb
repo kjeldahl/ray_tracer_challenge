@@ -7,9 +7,9 @@ class Sphere
 
   attr_reader :transform
 
-  def initialize
+  def initialize(transform: MyMatrix.identity)
     @center = Tuple.point(0.0, 0.0, 0.0)
-    @transform = MyMatrix.identity
+    @transform = transform
   end
 
   def transform=(new_transform)
