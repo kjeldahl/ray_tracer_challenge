@@ -1,16 +1,27 @@
 require 'intersection'
 require 'intersections'
+require 'my_matrix'
 
+# Note: This class is not immutable
 class Sphere
+
+  attr_reader :transform
 
   def initialize
     @center = Tuple.point(0.0, 0.0, 0.0)
+    @transform = MyMatrix.identity
+  end
+
+  def transform=(new_transform)
+    @transform = new_transform
   end
 
   def intersect(ray)
-    sphere_to_ray = ray.origin - @center
-    a = ray.direction.dot(ray.direction)
-    b = ray.direction.dot(sphere_to_ray) * 2
+    t_ray = ray.transform(@transform.inverse)
+
+    sphere_to_ray = t_ray.origin - @center
+    a = t_ray.direction.dot(t_ray.direction)
+    b = t_ray.direction.dot(sphere_to_ray) * 2
     c = sphere_to_ray.dot(sphere_to_ray) - 1
 
     discriminant = b**2 - 4 * a * c
