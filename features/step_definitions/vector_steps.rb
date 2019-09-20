@@ -16,12 +16,20 @@ Then("{var} {operator} {var} = {vector}") do |var1, operator, var2, vector|
   expect(i_get(var1).send(operator, i_get(var2))).to eq vector
 end
 
+Then("{var} = vector<{number}{operator}{number}, {number}{operator}{number}, {number}{operator}{number}>") do |var, x1, op_x, x2, y1, op_y, y2, z1, op_z, z2|
+  expect(i_get(var)).to eq Tuple.vector(x1.send(op_x, x2), y1.send(op_y, y2), z1.send(op_z, z2))
+end
+
 Then("magnitude<{var}> = {number}") do |var, magnitude|
   expect(i_get(var).magnitude).to eq(magnitude)
 end
 
 Then("normalize<{var}> = {vector}") do |var, vector|
   expect(i_get(var).normalize).to eq(vector)
+end
+
+Then("{var} = normalize<{var}>") do |var, var2|
+  expect(i_get(var)).to eq(i_get(var2).normalize)
 end
 
 Then("normalize<{var}> = approximately {vector}") do |var, vector|

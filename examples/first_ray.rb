@@ -28,6 +28,7 @@ class FirstRay
   def draw
     @transform = MyMatrix.
                   scale(45, 45, 1).
+                  #shear(0.5, 0.0, 0.5, 0.0, 0.0, 0.0).
                   translate(50, 50, 0)
     sphere = Sphere.new(transform: @transform)
 

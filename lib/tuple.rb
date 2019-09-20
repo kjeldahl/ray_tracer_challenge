@@ -73,6 +73,10 @@ class Tuple
     w.eql? 0.0
   end
 
+  def to_vector
+    Tuple.vector(x, y, z)
+  end
+
   def +(other)
     Tuple.new(x + other.x,
               y + other.y,
