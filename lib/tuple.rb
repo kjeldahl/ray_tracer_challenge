@@ -63,6 +63,9 @@ class Tuple
     )
   end
 
+  def reflect(other)
+    self - other * 2 * dot(other)
+  end
   # endregion
   #
   def point?

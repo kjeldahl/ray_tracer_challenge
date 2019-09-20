@@ -4,8 +4,16 @@ Given("{var} ← {vector}") do |var, vector|
   i_set(var, vector)
 end
 
+When("{var} ← vector<{number}{operator}{number}, {number}{operator}{number}, {number}>") do |var, x1, op_x, x2, y1, op_y, y2, z|
+  i_set(var, Tuple.vector(x1.send(op_x, x2), y1.send(op_y, y2), z))
+end
+
 When("{var} ← normalize<{var}>") do |var1, var2|
   i_set(var1, i_get(var2).normalize)
+end
+
+When("{var} ← reflect<{var}, {var}>") do |var, param_var1, param_var2|
+  i_set(var, i_get(param_var1).reflect(i_get(param_var2)))
 end
 
 Then("{var} = {vector}") do |var, vector|
