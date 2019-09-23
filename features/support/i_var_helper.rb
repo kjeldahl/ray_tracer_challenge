@@ -1,12 +1,14 @@
 # Adds Methods for accessing instanve variables using strings names
 module IVarHelper
 
-  def i_get(s)
-    instance_variable_get("@#{valid_instance_name(s)}")
+  def get(s)
+    @variables ||= {}
+    @variables["@#{valid_instance_name(s)}"]
   end
 
-  def i_set(s, v)
-    instance_variable_set("@#{valid_instance_name(s)}", v)
+  def set(s, v)
+    @variables ||= {}
+    @variables["@#{valid_instance_name(s)}"] = v
   end
 
   protected
