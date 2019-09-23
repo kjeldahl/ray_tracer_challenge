@@ -1,3 +1,19 @@
+When("{var} ← {var} {operator} {var}") do |var1, var2, operator, var3|
+  i_set(var1, i_get(var2).send(operator, i_get(var3)))
+end
+
+When("{var} ← {var}.{word}") do |var1, var2, attr|
+  i_set(var1, i_get(var2).send(attr.to_sym))
+end
+
+When("{var}.{word} ← {var}") do |var1, attr, var2|
+  i_get(var1).send("#{attr}=".to_sym, i_get(var2))
+end
+
+When("{var}.{word} ← {number}") do |var1, attr, num|
+  i_get(var1).send("#{attr}=".to_sym, num)
+end
+
 Then('{var} = {var}') do |var1, var2|
   expect(i_get(var1)).to eq i_get(var2)
 end
@@ -32,10 +48,6 @@ end
 
 Then("{var} {operator} {var} = {var}") do |var1, operator, var2, var3|
   expect(i_get(var1).send(operator, i_get(var2))).to eq i_get(var3)
-end
-
-And("{var} ← {var} {operator} {var}") do |var1, var2, operator, var3|
-  i_set(var1, i_get(var2).send(operator, i_get(var3)))
 end
 
 Then("{var}[{int},{int}] = {number}{operator}{number}") do |var, i, j, counter, operator, quotient|

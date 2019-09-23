@@ -10,6 +10,7 @@ class Color
   end
 
   WHITE = Color.new(1.0, 1.0, 1.0)
+  BLACK = Color.new(0.0, 0.0, 0.0)
   RED   = Color.new(1.0, 0.0, 0.0)
 
   def +(other)
@@ -41,9 +42,9 @@ class Color
 
   def ==(other)
     other.class == self.class &&
-      other.red == red &&
-      other.green == green &&
-      other.blue == blue
+      other.red.round(4) == red.round(4) &&
+      other.green.round(4) == green.round(4) &&
+      other.blue.round(4) == blue.round(4)
   end
 
   alias eql? ==

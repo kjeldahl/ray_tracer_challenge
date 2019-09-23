@@ -1,20 +1,18 @@
 require 'intersection'
 require 'intersections'
+require 'material'
 require 'my_matrix'
 require 'tuple'
 
 # Note: This class is not immutable
 class Sphere
 
-  attr_reader :transform
+  attr_accessor :transform, :material
 
-  def initialize(transform: MyMatrix.identity)
+  def initialize(transform: MyMatrix.identity, material: Material.default)
     @center = Tuple.point(0.0, 0.0, 0.0)
     @transform = transform
-  end
-
-  def transform=(new_transform)
-    @transform = new_transform
+    @material  = material
   end
 
   def intersect(ray)
