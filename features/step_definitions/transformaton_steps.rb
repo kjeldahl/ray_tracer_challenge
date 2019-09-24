@@ -22,6 +22,14 @@ Given("{var} ← view_transform<{var}, {var}, {var}>") do |var, from, to, up|
   set(var, MyMatrix.view_transform(get(from), get(to), get(up)))
 end
 
+Given("{var}.transform ← view_transform<{var}, {var}, {var}>") do |var, from, to, up|
+  get(var).transform = MyMatrix.view_transform(get(from), get(to), get(up))
+end
+
+When("{var}.{word} ← {rotation} {operator} {translation}") do |var, attr, rotation, operator, translation|
+  get(var).send("#{attr}=", rotation.send(operator, translation))
+end
+
 Then("{var} = {scaling}") do |var, scaling|
   expect(get(var)).to eq scaling
 end

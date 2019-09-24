@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'camera'
 require 'canvas'
 require 'color'
 require 'my_matrix'
@@ -85,6 +86,13 @@ ParameterType(
   regexp: /canvas<(\d+), (\d+)>/,
   type: Canvas,
   transformer: ->(width, height) { Canvas.new(Integer(width), Integer(height)) }
+)
+
+ParameterType(
+  name: 'camera',
+  regexp: /camera<(\d+), (\d+), π\/(\d+)>/,
+  type: Camera,
+  transformer: ->(hsize, vsize, fov) { Camera.new(Integer(hsize), Integer(vsize), Math::PI/Float(fov)) }
 )
 
 ParameterType(

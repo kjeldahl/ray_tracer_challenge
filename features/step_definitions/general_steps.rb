@@ -2,6 +2,14 @@ Given("{var}.{var}.{var} ← {number}") do |var, attr1, attr2, number|
   get(var).send(attr1.to_sym).send("#{attr2}=", number)
 end
 
+Given("{var} ← {int}") do |var, int|
+  set(var, int)
+end
+
+Given("{var} ← π{operator}{int}") do |var1, operator, var3|
+  set(var1, Math::PI.send(operator, var3))
+end
+
 When("{var} ← {var} {operator} {var}") do |var1, var2, operator, var3|
   set(var1, get(var2).send(operator, get(var3)))
 end
@@ -28,6 +36,10 @@ end
 
 Then('{var}.{word} = {number}') do |var, attr, number|
   expect(get(var).send(attr.to_sym)).to eq(number)
+end
+
+Then("{var}.{word} = π{operator}{number}") do |var, attr, operator, number|
+  expect(get(var).send(attr.to_sym)).to eq(Math::PI.send(operator, number))
 end
 
 Then("{var}[{int}] = {number}") do |var, idx, result|

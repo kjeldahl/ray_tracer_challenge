@@ -41,10 +41,11 @@ class Color
   end
 
   def ==(other)
+    round = 2
     other.class == self.class &&
-      other.red.round(4) == red.round(4) &&
-      other.green.round(4) == green.round(4) &&
-      other.blue.round(4) == blue.round(4)
+      other.red.round(round) == red.round(round) &&
+      other.green.round(round) == green.round(round) &&
+      other.blue.round(round) == blue.round(round)
   end
 
   alias eql? ==

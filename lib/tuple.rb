@@ -42,7 +42,7 @@ class Tuple
   end
 
   def normalize
-    raise unless vector?
+    raise("Not a vector") unless vector?
 
     Tuple.vector(x / magnitude, y / magnitude, z / magnitude)
   end
@@ -126,11 +126,12 @@ class Tuple
   end
 
   def ==(other)
+    round = 2
     other.class == self.class &&
-      other.x.round(5) == x.round(5) &&
-      other.y.round(5) == y.round(5) &&
-      other.z.round(5) == z.round(5) &&
-      other.w.round(5) == w.round(5)
+      other.x.round(round) == x.round(round) &&
+      other.y.round(round) == y.round(round) &&
+      other.z.round(round) == z.round(round) &&
+      other.w.round(round) == w.round(round)
   end
 
   alias eql? ==
