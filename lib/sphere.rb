@@ -9,7 +9,7 @@ class Sphere
 
   attr_accessor :transform, :material
 
-  def initialize(transform: MyMatrix.identity, material: Material.default)
+  def initialize(transform: MyMatrix.identity, material: Material.new)
     @center = Tuple.point(0.0, 0.0, 0.0)
     @transform = transform
     @material  = material

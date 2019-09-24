@@ -15,3 +15,7 @@ end
 Then("{var} = {point}") do |var, point|
   expect(get(var)).to eq point
 end
+
+Then("{var}.{word} = {point}") do |var, attr, point|
+  expect(get(var).send(attr.to_sym)).to eq point
+end

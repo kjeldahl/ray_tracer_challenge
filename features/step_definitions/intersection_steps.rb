@@ -20,3 +20,7 @@ end
 When("{var} ← hit<{var}>") do |var, var2|
   set(var, get(var2).hit)
 end
+
+When("{var} ← prepare_computations<{var}, {var}>") do |var, intersection_var, ray_var|
+  set(var, get(intersection_var).precompute(get(ray_var)))
+end

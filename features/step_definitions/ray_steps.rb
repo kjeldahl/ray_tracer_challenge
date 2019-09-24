@@ -15,14 +15,6 @@ When("{var} ← transform<{var}, {var}>") do |var, ray_var, transform_var|
   set(var, get(ray_var).transform(get(transform_var)))
 end
 
-Then('{var}.origin = {point}') do |var, point|
-  expect(get(var).origin).to eq(point)
-end
-
-Then('{var}.direction = {vector}') do |var, vector|
-  expect(get(var).direction).to eq(vector)
-end
-
 Then("position<{var}, {number}> = {point}") do |var, t, point|
   expect(get(var).position(t)).to eq point
 end

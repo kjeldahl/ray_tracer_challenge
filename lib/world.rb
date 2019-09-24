@@ -21,4 +21,8 @@ class World
       Intersections.new(*intersections)
     end
   end
+
+  def shade_hit(intersection_values)
+    PhongLighting.lighting(intersection_values.object.material, @light, intersection_values.point, intersection_values.eye_vector, intersection_values.normal)
+  end
 end

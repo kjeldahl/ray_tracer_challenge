@@ -58,3 +58,6 @@ Then('{var}.{word} = {var}') do |var, attr, var2|
   expect(get(var).send(attr.to_sym)).to eq(get(var2))
 end
 
+Then("{var}.{word} = {var}.{word}") do |var1, attr1, var2, attr2|
+  expect(get(var1).send(attr1.to_sym)).to eq get(var2).send(attr2.to_sym)
+end

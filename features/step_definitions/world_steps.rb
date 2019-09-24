@@ -27,6 +27,18 @@ When("{var} ← intersect_world<{var}, {var}>") do |var, world_var, ray_var|
   set(var, get(world_var).intersect(get(ray_var)))
 end
 
+When("{var} ← the first object in {var}") do |var, world_var|
+  set(var, get(world_var).objects.first)
+end
+
+When("{var} ← the second object in {var}") do |var, world_var|
+  set(var, get(world_var).objects[1])
+end
+
+When("{var} ← shade_hit<{var}, {var}>") do |var, world_var, comps_var|
+  set(var, get(world_var).shade_hit(get(comps_var)))
+end
+
 Then("{var} contains no objects") do |var|
   expect(get(var).objects).to be_empty
 end

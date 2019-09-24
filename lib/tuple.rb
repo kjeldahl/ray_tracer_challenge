@@ -119,10 +119,10 @@ class Tuple
   end
 
   def -@
-    Tuple.new(-x,
-              -y,
-              -z,
-              -w)
+    Tuple.new(x == 0 ? x : -x,
+              y == 0 ? y : -y,
+              z == 0 ? z : -z,
+              w == 0 ? w : -w)
   end
 
   def ==(other)

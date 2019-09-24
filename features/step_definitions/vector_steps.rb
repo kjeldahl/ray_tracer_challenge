@@ -55,3 +55,7 @@ end
 Then("cross<{var}, {var}> = {vector}") do |v1, v2, vector|
   expect(get(v1).cross(get(v2))).to eq(vector)
 end
+
+Then("{var}.{word} = {vector}") do |var, attr, vector|
+  expect(get(var).send(attr.to_sym)).to eq vector
+end
