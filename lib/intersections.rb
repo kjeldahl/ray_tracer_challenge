@@ -7,7 +7,7 @@ class Intersections
   end
 
   def initialize(*intersections)
-    @intersections = intersections
+    @intersections = intersections.sort_by!(&:t)
   end
 
   def hit
@@ -25,5 +25,9 @@ class Intersections
 
   def any?
     @intersections.count > 0
+  end
+
+  def to_a
+    @intersections.dup
   end
 end

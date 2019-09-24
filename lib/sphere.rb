@@ -43,4 +43,17 @@ class Sphere
     # Basically setting w to zero and then normalize
     world_normal.to_vector.normalize
   end
+
+  def ==(other)
+    other.class == self.class &&
+      other.transform == transform &&
+      other.material == material
+  end
+
+  alias eql? ==
+
+  def hash
+    @hash ||= [transform, material].hash
+  end
+
 end

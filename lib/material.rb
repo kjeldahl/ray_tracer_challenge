@@ -4,12 +4,6 @@
 class Material
   attr_accessor :color, :ambient, :diffuse, :specular, :shininess
 
-  class << self
-    def default
-      @default ||= Material.new
-    end
-  end
-
   def initialize(color:     Color::WHITE,
                  ambient:   0.1,
                  diffuse:   0.9,
