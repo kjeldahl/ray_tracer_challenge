@@ -39,6 +39,10 @@ When("{var} ← shade_hit<{var}, {var}>") do |var, world_var, comps_var|
   set(var, get(world_var).shade_hit(get(comps_var)))
 end
 
+When("{var} ← color_at<{var}, {var}>") do |var, world_var, ray_var|
+  set(var, get(world_var).color_at(get(ray_var)))
+end
+
 Then("{var} contains no objects") do |var|
   expect(get(var).objects).to be_empty
 end

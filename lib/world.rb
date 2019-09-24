@@ -23,6 +23,17 @@ class World
   end
 
   def shade_hit(intersection_values)
+    # TODO: Add support for multiple lights. call lighting for each and add colors
     PhongLighting.lighting(intersection_values.object.material, @light, intersection_values.point, intersection_values.eye_vector, intersection_values.normal)
+  end
+
+  def color_at(ray)
+    intersections = intersect(ray)
+    if intersections.any?
+      precomps = intersections.hit.precompute(ray)
+      shade_hit(precomps)
+    else
+      Color::BLACK
+    end
   end
 end

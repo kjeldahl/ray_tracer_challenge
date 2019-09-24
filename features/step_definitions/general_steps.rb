@@ -1,3 +1,7 @@
+Given("{var}.{var}.{var} ← {number}") do |var, attr1, attr2, number|
+  get(var).send(attr1.to_sym).send("#{attr2}=", number)
+end
+
 When("{var} ← {var} {operator} {var}") do |var1, var2, operator, var3|
   set(var1, get(var2).send(operator, get(var3)))
 end
@@ -60,4 +64,8 @@ end
 
 Then("{var}.{word} = {var}.{word}") do |var1, attr1, var2, attr2|
   expect(get(var1).send(attr1.to_sym)).to eq get(var2).send(attr2.to_sym)
+end
+
+Then("{var} = {var}.{var}.{var}") do |var, var2, attr1, attr2|
+  expect(get(var)).to eq get(var2).send(attr1.to_sym).send(attr2.to_sym)
 end
