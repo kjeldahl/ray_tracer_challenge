@@ -4,7 +4,6 @@ require 'color'
 require 'camera'
 require 'material'
 require 'my_matrix'
-require 'phong_lighting'
 require 'point_light'
 require 'sphere'
 require 'world'
@@ -12,14 +11,14 @@ require 'world'
 # Example demonstrating ray tracing using a camera
 #
 # Run:
-#   bundle exec ruby -Ilib -Iexamples -e'require "first_camera_world"'
-# It will output the file 'first_camera_world.ppm' in the CWD
+#   bundle exec ruby -Ilib -Iexamples -e'require "shadow_camera_world"'
+# It will output the file 'shadow_camera_world.ppm' in the CWD
 #
-class FirstCameraWorld
+class ShadowCameraWorld
   class << self
     def run
       t1 = Time.now
-      FirstCameraWorld.new.tap do |cam|
+      ShadowCameraWorld.new.tap do |cam|
         cam.setup
         cam.draw
         cam.dump_canvas
@@ -36,9 +35,11 @@ class FirstCameraWorld
                                                 Tuple.point(0.0, 1.0, 0.0),
                                                 Tuple.vector(0.0, 1.0, 0.0))
 
-    light = PointLight.new(Tuple.point(-10.0, 10.0, -10.0), Color::WHITE)
+    light1 = PointLight.new(Tuple.point(-10.0, 10.0, -10.0), Color::WHITE * 0.35)
+    light2 = PointLight.new(Tuple.point(0.0, 10.0, -10.0), Color::WHITE * 0.35)
+    light3 = PointLight.new(Tuple.point(10.0, 5.0, -10.0), Color::WHITE * 0.35)
 
-    @world = World.new(light: light, shadows: false)
+    @world = World.new(lights: [light1, light2, light3])
 
     @floor = Sphere.new(transform: MyMatrix.scaling(10.0, 0.01, 10.0),
                         material: Material.new(color: Color.new(1.0, 0.9, 0.9),
@@ -58,7 +59,8 @@ class FirstCameraWorld
                                           .translate(0.0, 0.0, 5.0),
                              material:  @floor.material)
 
-    @middle = Sphere.new(transform: MyMatrix.translate(-0.5, 1.0, 0.5),
+    @middle = Sphere.new(transform: MyMatrix.shear(0.80, 0.0, 0.50, 0.0, 0.0, 1.0)
+                                            .translate(-0.5, 1.0, 0.5),
                          material: Material.new(color: Color.new(0.1, 1.0, 0.5),
                                                 diffuse: 0.7,
                                                 specular: 0.3))
@@ -86,10 +88,10 @@ class FirstCameraWorld
   end
 
   def dump_canvas
-    File.open("first_camera_world.ppm", 'w') do |f|
+    File.open("shadow_camera_world.ppm", 'w') do |f|
       f << @canvas.to_ppm
     end
   end
 end
 
-FirstCameraWorld.run
+ShadowCameraWorld.run

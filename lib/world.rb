@@ -3,15 +3,28 @@ require 'phong_lighting'
 
 # NOTE: This class is not immutable
 class World
-  attr_accessor :light
 
-  def initialize(light: nil)
-    @light = light
+  def initialize(light: nil, lights: [], shadows: true)
+    @lights = [light, lights].compact.flatten.compact
     @objects = []
+    @shadows = shadows
+  end
+
+  def light
+    lights.first
+  end
+
+  def lights
+    @lights
   end
 
   def objects
     @objects
+  end
+
+  # Are shadows enabled in this world
+  def shadows?
+    @shadows
   end
 
   def intersect(ray)
@@ -24,14 +37,14 @@ class World
   end
 
   def shade_hit(intersection_values)
-    # TODO: Add support for multiple lights. call lighting for each and add colors
-
-    PhongLighting.lighting(intersection_values.object.material,
-                           @light,
-                           intersection_values.point,
-                           intersection_values.eye_vector,
-                           intersection_values.normal,
-                           shadowed?(intersection_values.over_point, @light))
+    lights.map do |l|
+      PhongLighting.lighting(intersection_values.object.material,
+                             l,
+                             intersection_values.over_point,
+                             intersection_values.eye_vector,
+                             intersection_values.normal,
+                             shadowed?(intersection_values.over_point, l))
+    end.reduce(:+)
   end
 
   def color_at(ray)
@@ -44,8 +57,10 @@ class World
     end
   end
 
-  def shadowed?(point, light=@light)
-    light_direction = light.position - point
+  def shadowed?(point, shadow_light = light)
+    return false unless shadows?
+
+    light_direction = shadow_light.position - point
     light_ray = Ray.new(point, light_direction.normalize)
 
     intersections = intersect(light_ray)
