@@ -3,7 +3,7 @@ module IVarHelper
 
   def get(s)
     @variables ||= {}
-    @variables["@#{valid_instance_name(s)}"]
+    @variables.fetch("@#{valid_instance_name(s)}")
   end
 
   def set(s, v)

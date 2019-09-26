@@ -4,6 +4,7 @@ require 'color'
 require 'camera'
 require 'material'
 require 'my_matrix'
+require 'gradient_pattern'
 require 'stripe_pattern'
 require 'point_light'
 require 'sphere'
@@ -37,9 +38,9 @@ class PatternWorld
                                                 Tuple.vector(0.0, 1.0, 0.0))
 
     lights = []
-    lights << PointLight.new(Tuple.point(-10.0, 10.0, -10.0), Color::WHITE * 0.35)
-    lights << PointLight.new(Tuple.point(0.0, 10.0, -10.0), Color::WHITE * 0.35)
-    lights << PointLight.new(Tuple.point(10.0, 5.0, -10.0), Color::WHITE * 0.35)
+    lights << PointLight.new(Tuple.point(-10.0, 10.0, -10.0), Color::WHITE)
+    # lights << PointLight.new(Tuple.point(0.0, 10.0, -10.0), Color::WHITE * 0.35)
+    # lights << PointLight.new(Tuple.point(10.0, 5.0, -10.0), Color::WHITE * 0.35)
 
     @world = World.new(lights: lights)
 
@@ -63,16 +64,21 @@ class PatternWorld
                              material:  @floor.material)
 
     @middle = Sphere.new(transform: MyMatrix.shear(0.80, 0.0, 0.50, 0.0, 0.0, 1.0)
+                                            .rotate(:x, Math::PI/-2)
                                             .translate(-0.5, 1.0, 0.5),
                          material: Material.new(color: Color.new(0.1, 1.0, 0.5),
                                                 diffuse: 0.7,
                                                 specular: 0.3,
-                                                pattern: StripePattern.new(Color::YELLOW, Color::BLUE)))
+                                                pattern: StripePattern.new(Color::YELLOW, Color::BLUE,
+                                                                           transform: MyMatrix.rotate(:y, Math::PI/2).scale(0.5,0.5,0.5))))
 
     @right = Sphere.new(transform: MyMatrix.scale(0.5, 0.5, 0.5).translate(1.5, 0.5, -0.5),
                         material:  Material.new(color:    Color.new(0.5, 1.0, 0.1),
                                                 diffuse:  0.7,
-                                                specular: 0.3))
+                                                specular: 0.3,
+                                                pattern: GradientPattern.new(Color::WHITE, Color::BLACK,
+                                                                             transform: MyMatrix.scale(0.5, 0.1, 0.1).
+                                                                             rotate(:y, Math::PI/4))))
 
     @left = Sphere.new(transform: MyMatrix.scale(0.33, 0.33, 0.33).translate(-1.5, 0.33, -0.75),
                        material:  Material.new(color:    Color.new(1.0, 0.8, 0.1),

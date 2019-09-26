@@ -2,6 +2,7 @@
 
 require 'color'
 require 'stripe_pattern'
+require 'gradient_pattern'
 
 # Helper for scenarios that reference the colors as a and b
 class StripePattern
@@ -47,6 +48,10 @@ Given("{var} ← test_pattern<>") do |var|
   set(var, TestPattern.new)
 end
 
+Given("{var} ← gradient_pattern<{var}, {var}>") do |var, var1, var2 |
+  set(var, GradientPattern.new(get(var1), get(var2)))
+end
+
 When("{var} ← stripe_at_object<{var}, {var}, {point}>") do |var, pattern_var, object_var, point|
   set(var, get(pattern_var).stripe_at_object(get(object_var), point))
 end
@@ -65,4 +70,12 @@ end
 
 Then("stripe_at<{var}, {point}> = {var}") do |pattern_var,point, color_var|
   expect(get(pattern_var).stripe_at(point)).to eq get(color_var)
+end
+
+Then("pattern_at<{var}, {point}> = {var}") do |pattern_var, point, color_var|
+  expect(get(pattern_var).pattern_at(point)).to eq get(color_var)
+  end
+
+Then("pattern_at<{var}, {point}> = {color}") do |pattern_var, point, color|
+  expect(get(pattern_var).pattern_at(point)).to eq color
 end
