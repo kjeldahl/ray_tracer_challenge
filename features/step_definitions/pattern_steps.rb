@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require 'color'
-require 'stripe_pattern'
 require 'gradient_pattern'
+require 'stripe_pattern'
+require 'ring_pattern'
 
 # Helper for scenarios that reference the colors as a and b
 class StripePattern
@@ -50,6 +51,10 @@ end
 
 Given("{var} ← gradient_pattern<{var}, {var}>") do |var, var1, var2 |
   set(var, GradientPattern.new(get(var1), get(var2)))
+end
+
+Given("{var} ← ring_pattern<{var}, {var}>") do |var, var1, var2 |
+  set(var, RingPattern.new(get(var1), get(var2)))
 end
 
 When("{var} ← stripe_at_object<{var}, {var}, {point}>") do |var, pattern_var, object_var, point|

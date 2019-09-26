@@ -6,6 +6,7 @@ require 'material'
 require 'my_matrix'
 require 'gradient_pattern'
 require 'stripe_pattern'
+require 'ring_pattern'
 require 'point_light'
 require 'sphere'
 require 'world'
@@ -83,7 +84,9 @@ class PatternWorld
     @left = Sphere.new(transform: MyMatrix.scale(0.33, 0.33, 0.33).translate(-1.5, 0.33, -0.75),
                        material:  Material.new(color:    Color.new(1.0, 0.8, 0.1),
                                                diffuse:  0.7,
-                                               specular: 0.3))
+                                               specular: 0.3,
+                                               pattern: RingPattern.new(Color::GREEN, Color::WHITE,
+                                                                        transform: MyMatrix.scale(0.1, 1.0, 0.1))))
 
     @world.objects << @floor
     @world.objects << @right_wall
