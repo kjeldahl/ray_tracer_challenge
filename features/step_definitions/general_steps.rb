@@ -6,6 +6,10 @@ Given("{var} ← {int}") do |var, int|
   set(var, int)
 end
 
+Given("{var} ← {var}") do |var, var2|
+  set(var, get(var2))
+end
+
 Given("{var} ← π{operator}{int}") do |var1, operator, var3|
   set(var1, Math::PI.send(operator, var3))
 end
@@ -80,4 +84,20 @@ end
 
 Then("{var} = {var}.{var}.{var}") do |var, var2, attr1, attr2|
   expect(get(var)).to eq get(var2).send(attr1.to_sym).send(attr2.to_sym)
+end
+
+Then("{var}.{word}.{word} < {var}{operator}{number}") do |var, attr1, attr2, var4, operator, number|
+  expect(get(var).send(attr1.to_sym).send(attr2.to_sym)).to be < get(var4).send(operator, number)
+end
+
+Then("{var}.{word}.{word} < {var}.{word}.{word}") do |var, attr1, attr2, var4, attr3, attr4|
+  expect(get(var).send(attr1.to_sym).send(attr2.to_sym)).to be < get(var4).send(attr3.to_sym).send(attr4.to_sym)
+end
+
+Then("{var}.{word}.{word} > {var}{operator}{number}") do |var, attr1, attr2, var4, operator, number|
+  expect(get(var).send(attr1.to_sym).send(attr2.to_sym)).to be > get(var4).send(operator, number)
+end
+
+Then("{var}.{word}.{word} > {var}.{word}.{word}") do |var, attr1, attr2, var4, attr3, attr4|
+  expect(get(var).send(attr1.to_sym).send(attr2.to_sym)).to be > get(var4).send(attr3.to_sym).send(attr4.to_sym)
 end

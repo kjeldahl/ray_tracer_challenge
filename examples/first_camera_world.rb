@@ -17,11 +17,14 @@ require 'world'
 class FirstCameraWorld
   class << self
     def run
+      t1 = Time.now
       FirstCameraWorld.new.tap do |cam|
         cam.setup
         cam.draw
         cam.dump_canvas
       end
+      t2 = Time.now
+      puts "Render time: #{t2-t1} seconds"
     end
   end
 

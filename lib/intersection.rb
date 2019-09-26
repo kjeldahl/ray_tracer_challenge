@@ -24,6 +24,8 @@ class Intersection
 end
 
 class Precomputed
+  EPSILON = 0.00001
+
   attr_reader :point, :eye_vector, :normal, :inside
 
   def initialize(intersection, point, eye_vector, normal, inside)
@@ -44,6 +46,10 @@ class Precomputed
 
   def inside?
     !!inside
+  end
+
+  def over_point
+    @over_point ||= @point + normal * EPSILON
   end
 
   # Aliases for satisfying features move to some helper if possible

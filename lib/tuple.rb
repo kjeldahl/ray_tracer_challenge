@@ -42,6 +42,7 @@ class Tuple
   end
 
   def normalize
+    # PERF: Could be cached
     raise("Not a vector") unless vector?
 
     Tuple.vector(x / magnitude, y / magnitude, z / magnitude)

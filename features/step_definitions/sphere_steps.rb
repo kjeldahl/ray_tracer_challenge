@@ -15,10 +15,15 @@ Given("{var} ← {sphere} with:") do |var, sphere, table|
       when "material.specular"
         sphere.material.specular = Float(value)
       when "transform"
-        if value == "scaling<0.5, 0.5, 0.5>"
-          sphere.transform = MyMatrix.scale(0.5, 0.5, 0.5)
-        else
-          raise "Unimplemented transform #{value}"
+        case value
+          when "scaling<0.5, 0.5, 0.5>"
+            sphere.transform = MyMatrix.scale(0.5, 0.5, 0.5)
+          when "translation<0, 0, 10>"
+            sphere.transform = MyMatrix.translate(0.0, 0.0, 10)
+          when "translation<0, 0, 1>"
+            sphere.transform = MyMatrix.translate(0.0, 0.0, 1.0)
+          else
+            raise "Unimplemented transform #{value}"
         end
       else
         raise "Unknown property: #{prop}"

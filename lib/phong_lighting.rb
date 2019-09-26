@@ -3,13 +3,15 @@ require 'color'
 class PhongLighting
   
   class << self
-    def lighting(material, light, position, eyev, normal)
+    def lighting(material, light, position, eyev, normal, in_shadow=false)
       effective_color = material.color * light.intensity
+
+      ambient = effective_color * material.ambient
+
+      return ambient if in_shadow
 
       # Find direction to light source
       light_vector = (light.position - position).normalize
-
-      ambient = effective_color * material.ambient
 
       # light_dot_normal represents the cosine of the angle between the​
       # light vector and the normal vector. A negative number means the​

@@ -35,6 +35,10 @@ When("{var} ← the second object in {var}") do |var, world_var|
   set(var, get(world_var).objects[1])
 end
 
+When("{var} is added to {var}") do |var, world_var|
+  get(world_var).objects << get(var)
+end
+
 When("{var} ← shade_hit<{var}, {var}>") do |var, world_var, comps_var|
   set(var, get(world_var).shade_hit(get(comps_var)))
 end
@@ -53,4 +57,8 @@ end
 
 Then("{var} has no light source") do |var|
   expect(get(var).light).to be_nil
+end
+
+Then("is_shadowed<{var}, {var}> is {var}") do |world_var, point_var, result_var|
+  expect(get(world_var).shadowed?(get(point_var))).to eq get(result_var)
 end
