@@ -55,6 +55,10 @@ Given("{var} ← ring_pattern<{var}, {var}>") do |var, var1, var2 |
   set(var, RingPattern.new(get(var1), get(var2)))
 end
 
+Given("{var} ← checkers_pattern<{var}, {var}>") do |var, var1, var2 |
+  set(var, CheckersPattern.new(get(var1), get(var2)))
+end
+
 When("{var} ← stripe_at_object<{var}, {var}, {point}>") do |var, pattern_var, object_var, point|
   set(var, get(pattern_var).stripe_at_object(get(object_var), point))
 end

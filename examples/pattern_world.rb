@@ -50,7 +50,10 @@ class PatternWorld
                                          .rotate(:x, Math::PI / 2)
                                          .rotate(:y, -Math::PI / 4)
                                          .translate(0.0, 0.0, 5.0),
-                            material:  @floor.material)
+                            material: Material.new(color: Color.new(1.0, 0.9, 0.9),
+                                                   specular: 0.0,
+                                                   pattern: CheckersPattern.new(Color::BLACK, Color::WHITE,
+                                                                                transform: MyMatrix.scale(0.1, 0.1, 0.1))))
 
     @right_wall = Sphere.new(transform: MyMatrix
                                           .scale(10.0, 0.01, 10.0)
