@@ -3,6 +3,7 @@ require 'phong_lighting'
 
 # NOTE: This class is not immutable
 class World
+  EPSILON = 0.00001
 
   def initialize(light: nil, lights: [], shadows: true)
     @lights = [light, lights].compact.flatten.compact

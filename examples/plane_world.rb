@@ -4,21 +4,22 @@ require 'color'
 require 'camera'
 require 'material'
 require 'my_matrix'
+require 'plane'
 require 'point_light'
 require 'sphere'
 require 'world'
 
-# Example demonstrating ray tracing using a camera
+# Example demonstrating ray tracing with a plane
 #
 # Run:
-#   bundle exec ruby -Ilib -Iexamples -e'require "shadow_camera_world"'
-# It will output the file 'shadow_camera_world.ppm' in the CWD
+#   bundle exec ruby -Ilib -Iexamples -e'require "plane_world"'
+# It will output the file 'plane_world.ppm' in the CWD
 #
-class ShadowCameraWorld
+class PlaneWorld
   class << self
     def run
       t1 = Time.now
-      ShadowCameraWorld.new.tap do |cam|
+      PlaneWorld.new.tap do |cam|
         cam.setup
         cam.draw
         cam.dump_canvas
@@ -36,32 +37,28 @@ class ShadowCameraWorld
                                                 Tuple.vector(0.0, 1.0, 0.0))
 
     lights = []
-    lights << PointLight.new(Tuple.point(-10.0, 10.0, -10.0), Color::WHITE * 0.35)
-    lights << PointLight.new(Tuple.point(0.0, 10.0, -10.0), Color::WHITE * 0.35)
-    lights << PointLight.new(Tuple.point(10.0, 5.0, -10.0), Color::WHITE * 0.35)
+    lights << PointLight.new(Tuple.point(-10.0, 10.0, -10.0), Color::WHITE)
+    # lights << PointLight.new(Tuple.point(0.0, 10.0, -10.0), Color::WHITE * 0.35)
+    # lights << PointLight.new(Tuple.point(10.0, 5.0, -10.0), Color::WHITE * 0.35)
 
     @world = World.new(lights: lights)
 
-    @floor = Sphere.new(transform: MyMatrix.scaling(10.0, 0.01, 10.0),
-                        material: Material.new(color: Color.new(1.0, 0.9, 0.9),
+    @floor = Plane.new(material: Material.new(color: Color.new(1.0, 0.9, 0.9),
                                                specular: 0.0))
 
-    @left_wall = Sphere.new(transform: MyMatrix
-                                         .scale(10.0, 0.01, 10.0)
+    @left_wall = Plane.new(transform: MyMatrix
                                          .rotate(:x, Math::PI / 2)
                                          .rotate(:y, -Math::PI / 4)
                                          .translate(0.0, 0.0, 5.0),
                             material:  @floor.material)
 
-    @right_wall = Sphere.new(transform: MyMatrix
-                                          .scale(10.0, 0.01, 10.0)
+    @right_wall = Plane.new(transform: MyMatrix
                                           .rotate(:x, Math::PI / 2)
                                           .rotate(:y, Math::PI / 4)
                                           .translate(0.0, 0.0, 5.0),
                              material:  @floor.material)
 
-    @middle = Sphere.new(transform: MyMatrix.shear(0.80, 0.0, 0.50, 0.0, 0.0, 1.0)
-                                            .translate(-0.5, 1.0, 0.5),
+    @middle = Sphere.new(transform: MyMatrix.translate(-0.5, 1.0, 0.5),
                          material: Material.new(color: Color.new(0.1, 1.0, 0.5),
                                                 diffuse: 0.7,
                                                 specular: 0.3))
@@ -77,8 +74,8 @@ class ShadowCameraWorld
                                                specular: 0.3))
 
     @world.objects << @floor
-    @world.objects << @right_wall
-    @world.objects << @left_wall
+    # @world.objects << @right_wall
+    # @world.objects << @left_wall
     @world.objects << @left
     @world.objects << @right
     @world.objects << @middle
@@ -89,10 +86,10 @@ class ShadowCameraWorld
   end
 
   def dump_canvas
-    File.open("shadow_camera_world.ppm", 'w') do |f|
+    File.open("plane_world.ppm", 'w') do |f|
       f << @canvas.to_ppm
     end
   end
 end
 
-ShadowCameraWorld.run
+PlaneWorld.run

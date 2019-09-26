@@ -47,7 +47,7 @@ class Shape
 
   protected
 
-    def local_intersect(local_ray, shape_to_ray_vector)
+    def local_intersect(local_ray)
       raise "Implement in sub class"
     end
 

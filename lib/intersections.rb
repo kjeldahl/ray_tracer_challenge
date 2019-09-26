@@ -27,6 +27,10 @@ class Intersections
     @intersections.count > 0
   end
 
+  def empty?
+    @intersections.count == 0
+  end
+
   def to_a
     @intersections.dup
   end

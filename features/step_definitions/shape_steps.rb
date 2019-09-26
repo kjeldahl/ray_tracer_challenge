@@ -5,6 +5,7 @@ require 'shape'
 
 World(IVarHelper)
 
+# Helper class for testing the Shape class
 class TestShape < Shape
 
   attr_reader :saved_ray
