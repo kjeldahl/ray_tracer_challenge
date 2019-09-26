@@ -113,7 +113,7 @@ ParameterType(
   name: 'rotation',
   regexp: /rotation_([xyz])<π ?\/ ?#{NUMBER_REGEXP}>/,
   type: MyMatrix,
-  transformer: ->(axis, radi) { MyMatrix.send("rotation_#{axis}".to_sym, Math::PI / aton(radi)) }
+  transformer: ->(axis, radi) { MyMatrix.rotate(axis.to_sym, Math::PI / aton(radi)) }
 )
 
 ParameterType(

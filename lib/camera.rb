@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+require 'canvas'
 require 'my_matrix'
+require 'ray'
+require 'tuple'
 
 # NOTE: Camera is not immutable
 class Camera
@@ -26,7 +29,7 @@ class Camera
     world_x = @half_width - xoffset
     world_y = @half_height - yoffset
 
-    pixel = transform.inverse * Tuple.point(world_x, world_y, -1)
+    pixel = transform.inverse * Tuple.point(world_x, world_y, -1.0)
 
     ray_origin = transform.inverse * Tuple.point(0.0, 0.0, 0.0)
     ray_direction = (pixel - ray_origin).to_vector.normalize

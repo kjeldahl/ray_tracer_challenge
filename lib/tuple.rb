@@ -48,7 +48,7 @@ class Tuple
   end
 
   def dot(other)
-    raise unless vector? && other.vector?
+    raise "Not a vector! self: #{vector?}, other: #{other.vector?}" unless vector? && other.vector?
 
     x * other.x + y * other.y + z * other.z
   end
@@ -126,7 +126,7 @@ class Tuple
   end
 
   def ==(other)
-    round = 2
+    round = 1
     other.class == self.class &&
       other.x.round(round) == x.round(round) &&
       other.y.round(round) == y.round(round) &&
@@ -138,5 +138,9 @@ class Tuple
 
   def hash
     @hash ||= [x, y, z, w].hash
+  end
+
+  def to_s
+    "Tuple(#{x}, #{y}, #{z}, #{w})"
   end
 end

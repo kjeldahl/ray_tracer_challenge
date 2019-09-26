@@ -216,7 +216,7 @@ class MyMatrix
     (0...height).each do |i|
       (0...width).each do |j|
         c = cofactor(i, j)
-        mb[j, i] = c / determinant
+        mb[j, i] = c / determinant # i and j are in reverse order to accomplish a transpose directly
       end
     end
 
@@ -274,6 +274,10 @@ class MyMatrix
 
   def hash
     @hash ||= data.hash
+  end
+
+  def to_s
+    "Matrix: \n#{data.map(&:to_s).join("\n")}"
   end
 
   protected
