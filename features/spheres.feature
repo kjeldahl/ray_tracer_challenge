@@ -65,6 +65,14 @@ Scenario: Intersecting a scaled sphere with a ray
     And xs[0].t = 3
     And xs[1].t = 7
 
+Scenario: A sphere is behind a ray
+  Given r ← ray<point<0, 0, -2.5>, vector<0, 0, 0.5>>
+    And s ← sphere<>
+  When xs ← intersect<s, r>
+  Then xs.count = 2
+    And xs[0].t = 3.0
+    And xs[1].t = 7.0
+
 Scenario: Intersecting a translated sphere with a ray
   Given r ← ray<point<0, 0, -5>, vector<0, 0, 1>>
     And s ← sphere<>
