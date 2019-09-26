@@ -14,10 +14,14 @@ And("{var}.light ← point_light<{point}, {color}>") do |var, position, intensit
 end
 
 When("{var} ← lighting<{var}, {var}, {var}, {var}, {var}>") do |var, material_var, light_var, position_var, eyev_var, normal_var|
-  set(var, PhongLighting.lighting(get(material_var), get(light_var), get(position_var), get(eyev_var), get(normal_var)))
+  set(var, PhongLighting.lighting(get(material_var), Sphere.new, get(light_var), get(position_var), get(eyev_var), get(normal_var)))
 end
 
 When("{var} ← lighting<{var}, {var}, {var}, {var}, {var}, {var}>") do |var, material_var, light_var, position_var, eyev_var, normal_var, in_shadow|
-  set(var, PhongLighting.lighting(get(material_var), get(light_var), get(position_var), get(eyev_var), get(normal_var), get(in_shadow)))
+  set(var, PhongLighting.lighting(get(material_var), Sphere.new, get(light_var), get(position_var), get(eyev_var), get(normal_var), get(in_shadow)))
+end
+
+When("{var} ← lighting<{var}, {var}, {point}, {var}, {var}, {var}>") do |var, material_var, light_var, position, eyev_var, normal_var, in_shadow|
+  set(var, PhongLighting.lighting(get(material_var), Sphere.new, get(light_var), position, get(eyev_var), get(normal_var), get(in_shadow)))
 end
 

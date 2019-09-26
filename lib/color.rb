@@ -9,10 +9,6 @@ class Color
     @blue = blue
   end
 
-  WHITE = Color.new(1.0, 1.0, 1.0)
-  BLACK = Color.new(0.0, 0.0, 0.0)
-  RED   = Color.new(1.0, 0.0, 0.0)
-
   def +(other)
     Color.new(red + other.red,
               green + other.green,
@@ -53,5 +49,14 @@ class Color
   def hash
     @hash ||= [red, green, blue].hash
   end
+
+  WHITE  = Color.new(1.0, 1.0, 1.0)
+  BLACK  = Color.new(0.0, 0.0, 0.0)
+  RED    = Color.new(1.0, 0.0, 0.0)
+  GREEN  = Color.new(0.0, 1.0, 0.0)
+  BLUE   = Color.new(0.0, 0.0, 1.0)
+  YELLOW  = RED + GREEN
+  MAGENTA = RED + BLUE
+  CYAN    = GREEN + BLUE
 
 end

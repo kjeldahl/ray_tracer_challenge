@@ -40,6 +40,7 @@ class World
   def shade_hit(intersection_values)
     lights.map do |l|
       PhongLighting.lighting(intersection_values.object.material,
+                             intersection_values.object,
                              l,
                              intersection_values.over_point,
                              intersection_values.eye_vector,

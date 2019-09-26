@@ -3,8 +3,8 @@ require 'color'
 class PhongLighting
   
   class << self
-    def lighting(material, light, position, eyev, normal, in_shadow=false)
-      effective_color = material.color * light.intensity
+    def lighting(material, object, light, position, eyev, normal, in_shadow=false)
+      effective_color = material_color(material, object, position) * light.intensity
 
       ambient = effective_color * material.ambient
 
@@ -43,5 +43,15 @@ class PhongLighting
       # Add the three contributions together to get the final shading​
       ambient + diffuse + specular
     end
+
+    private
+
+      def material_color(material, object, position)
+        if material.pattern
+          material.pattern.pattern_at_shape(object, position)
+        else
+          material.color
+        end
+      end
   end
 end
