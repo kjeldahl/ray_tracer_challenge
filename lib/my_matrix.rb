@@ -50,8 +50,8 @@ class MyMatrix
       MyMatrix.new(4, 4, [
         [Math.cos(radi), 0.0, Math.sin(radi), 0.0],
         [0.0, 1.0, 0.0, 0.0],
-        [0.0, 0.0, Math.cos(radi), 0.0],
-        [-Math.sin(radi), 0.0, 0.0, 1.0]
+        [-Math.sin(radi), 0.0, Math.cos(radi), 0.0],
+        [0.0, 0.0, 0.0, 1.0]
       ])
     end
 
