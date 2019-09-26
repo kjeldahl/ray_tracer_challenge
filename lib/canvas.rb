@@ -5,8 +5,8 @@ class Canvas
   attr_reader :width, :height
 
   def initialize(width, height)
-    @width = width
-    @height = height
+    @width = Integer(width)
+    @height = Integer(height)
     @pixels = []
     (0...height).each { |y| @pixels[y] = [Color.new(0.0, 0.0, 0.0)] * width }
     @max_color = 255
