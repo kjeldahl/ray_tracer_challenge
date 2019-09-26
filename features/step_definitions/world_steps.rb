@@ -1,4 +1,4 @@
-require 'world'
+require 'scene/world'
 
 World(IVarHelper)
 

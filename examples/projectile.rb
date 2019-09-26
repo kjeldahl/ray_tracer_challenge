@@ -1,4 +1,4 @@
-require 'canvas'
+require 'scene/canvas'
 require 'color'
 require 'tuple'
 

@@ -1,5 +1,3 @@
-require 'pattern'
-
 class RingPattern < Pattern
 
   attr_reader :color1, :color2

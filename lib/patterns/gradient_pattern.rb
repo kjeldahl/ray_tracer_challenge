@@ -1,5 +1,3 @@
-require 'pattern'
-
 class GradientPattern < Pattern
 
   attr_reader :color1, :color2

@@ -1,4 +1,4 @@
-require 'canvas'
+require 'scene'
 require 'my_matrix'
 require 'tuple'
 

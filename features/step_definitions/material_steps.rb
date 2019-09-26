@@ -1,4 +1,4 @@
-require 'material'
+require 'scene/material'
 
 World(IVarHelper)
 

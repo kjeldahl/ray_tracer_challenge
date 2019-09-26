@@ -1,6 +1,5 @@
 require 'intersection'
 require 'intersections'
-require 'shape'
 
 class Plane < Shape
   PLANE_NORMAL = Tuple.vector(0.0, 1.0, 0.0).freeze

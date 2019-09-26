@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require 'camera'
-require 'canvas'
+require 'scene'
 require 'color'
 require 'my_matrix'
 require 'tuple'
-require 'sphere'
+require 'shapes'
 
 NUMBER_REGEXP = '(√?[-+]?(\\d+(\\.\\d+)?|\\.\\d+))' # Must have capture group on entire expression
 

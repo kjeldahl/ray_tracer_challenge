@@ -1,5 +1,4 @@
-require 'phong_lighting'
-require 'point_light'
+require 'scene'
 
 When("{var} ← point_light<{var}, {var}>") do |var, position_var, intensity_var|
   set(var, PointLight.new(get(position_var), get(intensity_var)))

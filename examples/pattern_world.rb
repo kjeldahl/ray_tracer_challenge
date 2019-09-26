@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
 require 'color'
-require 'camera'
-require 'material'
+require 'scene'
 require 'my_matrix'
-require 'gradient_pattern'
-require 'stripe_pattern'
-require 'ring_pattern'
-require 'point_light'
-require 'sphere'
-require 'world'
+require 'patterns'
+require 'shapes'
 
 # Example demonstrating ray tracing using a camera
 #

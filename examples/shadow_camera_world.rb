@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 require 'color'
-require 'camera'
-require 'material'
+require 'scene'
 require 'my_matrix'
-require 'point_light'
-require 'sphere'
-require 'world'
+require 'shapes'
 
 # Example demonstrating ray tracing using a camera
 #

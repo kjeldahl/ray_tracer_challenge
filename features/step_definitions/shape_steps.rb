@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'intersections'
-require 'shape'
+require 'shapes'
 
 World(IVarHelper)
 

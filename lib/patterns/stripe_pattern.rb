@@ -1,7 +1,4 @@
 # frozen_string_literal: true
-
-require 'pattern'
-
 class StripePattern < Pattern
 
   attr_reader :color1, :color2

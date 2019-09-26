@@ -2,7 +2,6 @@
 
 require 'intersection'
 require 'intersections'
-require 'shape'
 
 # Note: This class is not immutable
 class Sphere < Shape

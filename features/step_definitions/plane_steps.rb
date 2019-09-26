@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'plane'
+require 'shapes'
 
 World(IVarHelper)
 

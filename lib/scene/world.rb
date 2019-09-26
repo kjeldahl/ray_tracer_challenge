@@ -1,5 +1,5 @@
 require 'intersections'
-require 'phong_lighting'
+require 'scene/phong_lighting'
 
 # NOTE: This class is not immutable
 class World

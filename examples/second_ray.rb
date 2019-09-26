@@ -1,10 +1,7 @@
-require 'canvas'
-require 'material'
+require 'scene'
 require 'my_matrix'
-require 'phong_lighting'
-require 'point_light'
 require 'ray'
-require 'sphere'
+require 'shapes'
 require 'tuple'
 
 # Example demonstrating ray tracing with shading of a sphere

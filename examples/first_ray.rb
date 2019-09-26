@@ -1,8 +1,7 @@
-require 'canvas'
+require 'scene'
 require 'my_matrix'
 require 'tuple'
 require 'ray'
-require 'sphere'
 
 # Example demonstrating simple ray tracing of a sphere
 #

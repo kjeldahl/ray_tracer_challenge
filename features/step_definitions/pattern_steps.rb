@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 require 'color'
-require 'gradient_pattern'
-require 'stripe_pattern'
-require 'ring_pattern'
+require 'patterns'
 
 # Helper for scenarios that reference the colors as a and b
 class StripePattern

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'material'
+require 'scene/material'
 require 'my_matrix'
 require 'tuple'
 

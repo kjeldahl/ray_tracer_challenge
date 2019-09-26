@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'sphere'
+require 'shapes'
 
 World(IVarHelper)
 

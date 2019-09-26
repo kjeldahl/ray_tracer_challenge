@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'canvas'
+require 'scene'
 
 World(IVarHelper)
 
