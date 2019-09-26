@@ -1,4 +1,5 @@
 require 'intersections'
+require 'phong_lighting'
 
 # NOTE: This class is not immutable
 class World
@@ -29,7 +30,7 @@ class World
 
   def color_at(ray)
     intersections = intersect(ray)
-    if intersections.any?
+    if intersections.any? && intersections.hit
       precomps = intersections.hit.precompute(ray)
       shade_hit(precomps)
     else
