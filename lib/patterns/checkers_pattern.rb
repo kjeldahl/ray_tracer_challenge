@@ -9,6 +9,6 @@ class CheckersPattern < Pattern
   end
 
   def pattern_at(pattern_point)
-    (pattern_point.x.abs + pattern_point.y.abs + pattern_point.z.abs).floor % 2 == 0 ? @color1 : @color2
+    (pattern_point.x.floor + pattern_point.y.floor + pattern_point.z.floor) % 2 == 0 ? @color1 : @color2
   end
 end

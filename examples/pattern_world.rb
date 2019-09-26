@@ -40,20 +40,20 @@ class PatternWorld
 
     @world = World.new(lights: lights)
 
-    @floor = Sphere.new(transform: MyMatrix.scaling(10.0, 0.01, 10.0),
-                        material: Material.new(color: Color.new(1.0, 0.9, 0.9),
+    @floor = Plane.new(material: Material.new(color: Color.new(1.0, 0.9, 0.9),
                                                specular: 0.0,
-                                               pattern: StripePattern.new(Color::RED, Color::WHITE)))
+                                               pattern: CheckersPattern.new(Color::RED, Color::WHITE,
+                                                                            transform: MyMatrix.scale(1.0, 1.0, 1.0))))
 
-    @left_wall = Sphere.new(transform: MyMatrix
-                                         .scale(10.0, 0.01, 10.0)
+    @left_wall = Plane.new(transform: MyMatrix
                                          .rotate(:x, Math::PI / 2)
                                          .rotate(:y, -Math::PI / 4)
                                          .translate(0.0, 0.0, 5.0),
                             material: Material.new(color: Color.new(1.0, 0.9, 0.9),
                                                    specular: 0.0,
-                                                   pattern: CheckersPattern.new(Color::BLACK, Color::WHITE,
-                                                                                transform: MyMatrix.scale(0.1, 0.1, 0.1))))
+                                                   pattern: StripePattern.new(Color::YELLOW, Color::BLUE,
+                                                                     transform: MyMatrix.rotate(:y, Math::PI/2).scale(0.5,0.5,0.5))
+                                                   ))
 
     @right_wall = Sphere.new(transform: MyMatrix
                                           .scale(10.0, 0.01, 10.0)
@@ -68,8 +68,8 @@ class PatternWorld
                          material: Material.new(color: Color.new(0.1, 1.0, 0.5),
                                                 diffuse: 0.7,
                                                 specular: 0.3,
-                                                pattern: StripePattern.new(Color::YELLOW, Color::BLUE,
-                                                                           transform: MyMatrix.rotate(:y, Math::PI/2).scale(0.5,0.5,0.5))))
+                                                pattern: CheckersPattern.new(Color::BLACK, Color::WHITE,
+                                                                             transform: MyMatrix.scale(1.8, 0.5, 0.5))))
 
     @right = Sphere.new(transform: MyMatrix.scale(0.5, 0.5, 0.5).translate(1.5, 0.5, -0.5),
                         material:  Material.new(color:    Color.new(0.5, 1.0, 0.1),
