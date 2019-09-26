@@ -10,7 +10,7 @@ And("{var} ← point_light<{point}, {color}>") do |var, position, intensity|
 end
 
 And("{var}.light ← point_light<{point}, {color}>") do |var, position, intensity|
-  get(var).light = PointLight.new(position, intensity)
+  get(var).lights[0] = PointLight.new(position, intensity)
 end
 
 When("{var} ← lighting<{var}, {var}, {var}, {var}, {var}>") do |var, material_var, light_var, position_var, eyev_var, normal_var|

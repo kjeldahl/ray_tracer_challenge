@@ -30,11 +30,19 @@ When("{var}.{word} ← {rotation} {operator} {translation}") do |var, attr, rota
   get(var).send("#{attr}=", rotation.send(operator, translation))
 end
 
+When("{var} ← {scaling} {operator} {rotation}") do |var, scaling, operator, rotation|
+  set(var, scaling.send(operator, rotation))
+end
+
 Then("{var} = {scaling}") do |var, scaling|
   expect(get(var)).to eq scaling
 end
 
 Then("{var} = {translation}") do |var, translation|
   expect(get(var)).to eq translation
+end
+
+Then("{var}.{word} = {translation}") do |var, attr, translation|
+  expect(get(var).send(attr.to_sym)).to eq translation
 end
 

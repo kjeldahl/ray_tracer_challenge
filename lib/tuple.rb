@@ -11,6 +11,10 @@ class Tuple
       new(x, y, z, 1.0)
     end
 
+    def origin
+      @origin ||= Tuple.point(0.0, 0.0, 0.0)
+    end
+
     def vector(x, y, z)
       new(x, y, z, 0.0)
     end
