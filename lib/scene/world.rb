@@ -37,23 +37,28 @@ class World
     end
   end
 
-  def shade_hit(intersection_values)
+  def shade_hit(intersection_values, remaining = 1)
     lights.map do |l|
-      PhongLighting.lighting(intersection_values.object.material,
-                             intersection_values.object,
-                             l,
-                             intersection_values.over_point,
-                             intersection_values.eye_vector,
-                             intersection_values.normal,
-                             shadowed?(intersection_values.over_point, l))
+      surface =
+        PhongLighting.lighting(intersection_values.object.material,
+                               intersection_values.object,
+                               l,
+                               intersection_values.over_point,
+                               intersection_values.eye_vector,
+                               intersection_values.normal,
+                               shadowed?(intersection_values.over_point, l))
+
+      reflection = reflected_color(intersection_values, remaining)
+
+      surface + reflection
     end.reduce(:+)
   end
 
-  def color_at(ray)
+  def color_at(ray, remaining = 5)
     intersections = intersect(ray)
     if intersections.any? && intersections.hit
       precomps = intersections.hit.precompute(ray)
-      shade_hit(precomps)
+      shade_hit(precomps, remaining)
     else
       Color::BLACK
     end
@@ -71,6 +76,18 @@ class World
       intersections.hit.t < light_direction.magnitude
     else
       false
+    end
+  end
+
+  def reflected_color(precomputed, remaining=1)
+    return Color::BLACK if remaining == 0
+
+    if precomputed.object.material.reflective > 0
+      reflection_ray = Ray.new(precomputed.over_point, precomputed.reflectv)
+
+      color_at(reflection_ray, remaining - 1) * precomputed.object.material.reflective
+    else
+      Color::BLACK
     end
   end
 end

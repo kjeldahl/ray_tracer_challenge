@@ -2,19 +2,22 @@
 
 # Note: This class is not immutable
 class Material
-  attr_accessor :color, :ambient, :diffuse, :specular, :shininess, :pattern
+  attr_accessor :color, :ambient, :diffuse, :specular, :shininess, :reflective,
+                :pattern
 
   def initialize(color:     Color::WHITE,
                  ambient:   0.1,
                  diffuse:   0.9,
                  specular:  0.9,
                  shininess: 200.0,
+                 reflective: 0.0,
                  pattern:   nil)
     @color = color
     @ambient = ambient
     @diffuse = diffuse
     @specular = specular
     @shininess = shininess
+    @reflective = reflective
     @pattern = pattern
   end
 
@@ -25,12 +28,13 @@ class Material
       other.diffuse == diffuse &&
       other.specular == specular &&
       other.shininess == shininess &&
+      other.reflective == reflective &&
       other.pattern == pattern
   end
 
   alias eql? ==
 
   def hash
-    [color, ambient, diffuse, specular, shininess, pattern].hash
+    [color, ambient, diffuse, specular, shininess, reflective, pattern].hash
   end
 end

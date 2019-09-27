@@ -10,15 +10,33 @@ class Color
   end
 
   def +(other)
-    Color.new(red + other.red,
-              green + other.green,
-              blue + other.blue)
+    case other
+      when Color
+        Color.new(red + other.red,
+                  green + other.green,
+                  blue + other.blue)
+      when Numeric
+        Color.new(red + other,
+                  green + other,
+                  blue + other)
+      else
+        raise "Cannot add #{other} to color"
+    end
   end
 
   def -(other)
-    Color.new(red - other.red,
-              green - other.green,
-              blue - other.blue)
+    case other
+      when Color
+        Color.new(red - other.red,
+                  green - other.green,
+                  blue - other.blue)
+      when Numeric
+        Color.new(red - other,
+                  green - other,
+                  blue - other)
+      else
+        raise "Cannot add #{other} to color"
+    end
   end
 
   def *(other)

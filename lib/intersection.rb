@@ -12,6 +12,8 @@ class Intersection
     normal = object.normal_at(hit_point)
     eye_direction = -ray.direction
 
+    reflectv = ray.direction.reflect(normal.normalize)
+
     if ray.direction.dot(normal) < 0
       inside = false
     else
@@ -19,21 +21,22 @@ class Intersection
       normal = -normal
     end
 
-    Precomputed.new(self, hit_point, eye_direction, normal, inside)
+    Precomputed.new(self, hit_point, eye_direction, normal, inside, reflectv)
   end
 end
 
 class Precomputed
   EPSILON = 0.00001
 
-  attr_reader :point, :eye_vector, :normal, :inside
+  attr_reader :point, :eye_vector, :normal, :inside, :reflectv
 
-  def initialize(intersection, point, eye_vector, normal, inside)
+  def initialize(intersection, point, eye_vector, normal, inside, reflectv)
     @intersection = intersection
     @point = point
     @eye_vector = eye_vector
     @normal = normal
     @inside = inside
+    @reflectv = reflectv
   end
 
   def t

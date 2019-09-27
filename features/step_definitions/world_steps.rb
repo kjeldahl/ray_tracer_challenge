@@ -47,6 +47,14 @@ When("{var} ← color_at<{var}, {var}>") do |var, world_var, ray_var|
   set(var, get(world_var).color_at(get(ray_var)))
 end
 
+When("{var} ← reflected_color<{var}, {var}>") do |var, world_var, comps_var|
+  set(var, get(world_var).reflected_color(get(comps_var)))
+end
+
+When("{var} ← reflected_color<{var}, {var}, {int}>") do |var, world_var, comps_var, remaining|
+  set(var, get(world_var).reflected_color(get(comps_var), remaining))
+end
+
 Then("{var} contains no objects") do |var|
   expect(get(var).objects).to be_empty
 end
@@ -61,4 +69,14 @@ end
 
 Then("is_shadowed<{var}, {var}> is {var}") do |world_var, point_var, result_var|
   expect(get(world_var).shadowed?(get(point_var))).to eq get(result_var)
+end
+
+Then("color_at<{var}, {var}> should terminate successfully") do |world_var, ray_var|
+  old_value = RSpec::Expectations.configuration.on_potential_false_positives
+  begin
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
+    expect { get(world_var).color_at(get(ray_var)) }.not_to raise_exception(SystemStackError)
+  ensure
+    RSpec::Expectations.configuration.on_potential_false_positives = old_value
+  end
 end

@@ -68,4 +68,8 @@ Then("{var}.{word} = vector<{number}{operator}{number}, {number}, {number}{opera
   expect(get(var).send(attr.to_sym)).to eq Tuple.vector(x1.send(op_x, x2), y, z1.send(op_z, z2))
 end
 
+Then("{var}.{word} = vector<{number}, {number}{operator}{number}, {number}{operator}{number}>") do |var, attr, x, y1, op_y, y2, z1, op_z, z2|
+  expect(get(var).send(attr.to_sym)).to eq Tuple.vector(x, y1.send(op_y, y2), z1.send(op_z, z2))
+end
+
 
