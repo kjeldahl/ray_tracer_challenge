@@ -19,8 +19,16 @@ class Intersections
     @intersections.count
   end
 
+  def index(v)
+    @intersections.index(v)
+  end
+
   def [](idx)
     @intersections[idx]
+  end
+
+  def each(&block)
+    @intersections.each(&block)
   end
 
   def any?

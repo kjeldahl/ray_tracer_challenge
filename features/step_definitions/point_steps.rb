@@ -4,6 +4,11 @@ Given('{var} ← {point}') do |var, point|
   set(var, point)
 end
 
+Given("{var} ← point<{number}, {number}, {number}{operator}{number}>") do |var, x1, y1, z1, op_z, z2|
+  set(var, Tuple.point(x1, y1, z1.send(op_z, z2)))
+end
+
+
 Then('{var} {operator} {var} = {point}') do |var1, op, var2, point|
   expect(get(var1).send(op, get(var2))).to eq(point)
 end

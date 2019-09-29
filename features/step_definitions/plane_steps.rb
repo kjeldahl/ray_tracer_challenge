@@ -19,6 +19,10 @@ Given("{var} ← plane<> with:") do |var, table|
         plane.material.diffuse = Float(value)
       when "material.specular"
         plane.material.specular = Float(value)
+      when "material.transparency"
+        plane.material.transparency = Float(value)
+      when "material.refractive_index"
+        plane.material.refractive_index = Float(value)
       when "material.reflective"
         plane.material.reflective = Float(value)
       when "transform"

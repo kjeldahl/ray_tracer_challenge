@@ -36,7 +36,7 @@ class ReflectionWorld
     lights = []
     lights << PointLight.new(Tuple.point(-10.0, 10.0, -10.0), Color::WHITE)
     # lights << PointLight.new(Tuple.point(0.0, 10.0, -10.0), Color::WHITE * 0.35)
-    lights << PointLight.new(Tuple.point(10.0, 5.0, -10.0), Color::WHITE * 0.35)
+    # lights << PointLight.new(Tuple.point(10.0, 5.0, -10.0), Color::WHITE * 0.5)
 
     @world = World.new(lights: lights)
 
@@ -51,7 +51,7 @@ class ReflectionWorld
                                          .translate(0.0, 0.0, 5.0),
                            material: Material.new(color: Color.new(1.0, 0.9, 0.9),
                                                   specular: 0.0,
-                                                  reflective: 0.15,
+                                                  reflective: 0.07,
                                                   pattern: StripePattern.new(Color::WHITE * 0.8, Color::BLACK + 0.2,
                                                                              transform: MyMatrix.scale(0.25, 0.25, 0.25).rotate(:y, Math::PI/2))))
 
@@ -72,7 +72,7 @@ class ReflectionWorld
                         material: Material.new(color: Color.new(0.5, 1.0, 0.1),
                                                diffuse: 0.7,
                                                specular: 0.3,
-                                               reflective: 0.9))
+                                               reflective: 0.6))
 
     @left = Sphere.new(transform: MyMatrix.scale(0.33, 0.33, 0.33).translate(-1.5, 0.33, -0.75),
                        material: Material.new(color: Color.new(1.0, 0.8, 0.1),

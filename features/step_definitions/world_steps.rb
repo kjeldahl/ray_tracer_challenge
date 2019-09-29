@@ -43,6 +43,10 @@ When("{var} ← shade_hit<{var}, {var}>") do |var, world_var, comps_var|
   set(var, get(world_var).shade_hit(get(comps_var)))
 end
 
+When("{var} ← shade_hit<{var}, {var}, {number}>") do |var, world_var, comps_var, remaining|
+  set(var, get(world_var).shade_hit(get(comps_var), remaining))
+end
+
 When("{var} ← color_at<{var}, {var}>") do |var, world_var, ray_var|
   set(var, get(world_var).color_at(get(ray_var)))
 end
@@ -53,6 +57,10 @@ end
 
 When("{var} ← reflected_color<{var}, {var}, {int}>") do |var, world_var, comps_var, remaining|
   set(var, get(world_var).reflected_color(get(comps_var), remaining))
+end
+
+When("{var} ← refracted_color<{var}, {var}, {int}>") do |var, world_var, comps_var, remaining|
+  set(var, get(world_var).refracted_color(get(comps_var), remaining))
 end
 
 Then("{var} contains no objects") do |var|
@@ -80,3 +88,4 @@ Then("color_at<{var}, {var}> should terminate successfully") do |world_var, ray_
     RSpec::Expectations.configuration.on_potential_false_positives = old_value
   end
 end
+

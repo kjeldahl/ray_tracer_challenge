@@ -25,6 +25,49 @@ Given("{var} ← test_shape<>") do |var|
   set(var, TestShape.new)
 end
 
+Given("{var} has:") do |var, table|
+  shape = get(var)
+  table.raw.each do |line| # line is an array
+    prop, value = *line
+    case prop
+      when "material.color"
+        shape.material.color = Color.new(*value[1..-2].split(", ").map(&:to_f))
+      when "material.ambient"
+        shape.material.ambient = Float(value)
+      when "material.diffuse"
+        shape.material.diffuse = Float(value)
+      when "material.specular"
+        shape.material.specular = Float(value)
+      when "material.reflective"
+        shape.material.reflective = Float(value)
+      when "material.transparency"
+        shape.material.transparency = Float(value)
+      when "material.refractive_index"
+        shape.material.refractive_index = Float(value)
+      when "material.pattern"
+        case value
+          when "test_pattern<>"
+            shape.material.pattern = TestPattern.new
+          else
+            raise "Unknown pattern: #{value}"
+        end
+      when "transform"
+        case value
+          when "translation<0, -1, 0>"
+            shape.transform = MyMatrix.translate(0.0, -1.0, 0.0)
+          when "translation<0, 1, 0>"
+            shape.transform = MyMatrix.translate(0.0, 1.0, 0.0)
+          else
+            raise "Unimplemented transform #{value}"
+        end
+      else
+        raise "Unknown property: #{prop}"
+    end
+    set(var, shape)
+  end
+end
+
+
 When("{var} ← intersect<{var}, {var}>") do |var, shape_var, ray_var|
   set(var, get(shape_var).intersect(get(ray_var)))
 end

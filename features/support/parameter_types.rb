@@ -128,3 +128,10 @@ ParameterType(
   type: Sphere,
   transformer: ->(s) { Sphere.new }
 )
+
+ParameterType(
+  name: 'glass_sphere',
+  regexp: /glass_sphere<>/,
+  type: Sphere,
+  transformer: ->(s) { Sphere.new(material: Material.new(transparency: 1.0, refractive_index: 1.5)) }
+)

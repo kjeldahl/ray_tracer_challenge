@@ -90,6 +90,10 @@ Then("{var}.{word}.{word} < {var}{operator}{number}") do |var, attr1, attr2, var
   expect(get(var).send(attr1.to_sym).send(attr2.to_sym)).to be < get(var4).send(operator, number)
 end
 
+Then("{var}.{word}.{word} = {number}") do |var, attr1, attr2, number|
+  expect(get(var).send(attr1.to_sym).send(attr2.to_sym)).to eq number
+end
+
 Then("{var}.{word}.{word} < {var}.{word}.{word}") do |var, attr1, attr2, var4, attr3, attr4|
   expect(get(var).send(attr1.to_sym).send(attr2.to_sym)).to be < get(var4).send(attr3.to_sym).send(attr4.to_sym)
 end

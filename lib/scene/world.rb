@@ -50,14 +50,16 @@ class World
 
       reflection = reflected_color(intersection_values, remaining)
 
-      surface + reflection
+      refracted_color = refracted_color(intersection_values, remaining)
+
+      surface + reflection + refracted_color
     end.reduce(:+)
   end
 
   def color_at(ray, remaining = 5)
     intersections = intersect(ray)
     if intersections.any? && intersections.hit
-      precomps = intersections.hit.precompute(ray)
+      precomps = intersections.hit.precompute(ray, intersections)
       shade_hit(precomps, remaining)
     else
       Color::BLACK
@@ -86,6 +88,32 @@ class World
       reflection_ray = Ray.new(precomputed.over_point, precomputed.reflectv)
 
       color_at(reflection_ray, remaining - 1) * precomputed.object.material.reflective
+    else
+      Color::BLACK
+    end
+  end
+
+  def refracted_color(precomputed, remaining=1)
+    return Color::BLACK if remaining == 0
+
+    if precomputed.object.material.transparency > 0
+      # Snell's law for internal reflection
+      n_ratio = precomputed.n1 / precomputed.n2
+      cos_i = precomputed.eye_vector.dot(precomputed.normal)
+      sin2_t = n_ratio**2 * (1 - cos_i**2)
+
+      if sin2_t > 1.0 # Total internal reflection
+        Color::BLACK # TODO: Why not create a new ray here?
+      else
+        # Send new refracted ray
+        cos_t = Math.sqrt(1.0 - sin2_t)
+
+        direction = precomputed.normal * (n_ratio * cos_i - cos_t) - precomputed.eye_vector * n_ratio
+
+        refracted_ray = Ray.new(precomputed.under_point, direction)
+
+        color_at(refracted_ray, remaining - 1) * precomputed.object.material.transparency
+      end
     else
       Color::BLACK
     end
