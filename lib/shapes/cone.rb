@@ -1,11 +1,11 @@
-class Cylinder < Shape
+class Cone < Shape
 
   attr_accessor :minimum, :maximum, :closed
 
   # @param [Float] min - not included in the cylinder
   # @param [Float] max - not included in the cylinder
   # @param [bool] closed
-  # @return A newly instantiated cylinder with the given contraints
+  # @return A newly instantiated cone with the given contraints
   def initialize(min: -Float::INFINITY, max: Float::INFINITY, closed: false)
     @minimum = min
     @maximum = max
@@ -13,17 +13,26 @@ class Cylinder < Shape
   end
 
   def local_intersect(local_ray)
-    a = local_ray.direction.x**2 + local_ray.direction.z**2
+    a = local_ray.direction.x**2 - local_ray.direction.y**2 + local_ray.direction.z**2
+    b = 2 * local_ray.origin.x * local_ray.direction.x -
+        2 * local_ray.origin.y * local_ray.direction.y +
+        2 * local_ray.origin.z * local_ray.direction.z
+    c = local_ray.origin.x**2 - local_ray.origin.y**2 + local_ray.origin.z**2
 
-    # Parallel with y axis
+
+    # Parallel with cone half
     if a.abs < World::EPSILON
-      return closed ? Intersections.new(*intersect_caps(local_ray, [])) : Intersections.empty
+      return Intersections.empty if b.abs < World::EPSILON
+
+      # One intersection
+      t = -c / (2 * b)
+
+      is = [Intersection.new(t, self)]
+      intersect_caps(local_ray, is) if closed
+
+      return Intersections.new(*is)
     end
 
-    b = 2 * local_ray.origin.x * local_ray.direction.x +
-        2 * local_ray.origin.z * local_ray.direction.z
-
-    c            = local_ray.origin.x**2 + local_ray.origin.z**2 - 1
     discriminant = b**2 - 4 * a * c
 
     # Ray miss
@@ -32,7 +41,7 @@ class Cylinder < Shape
     t1 = (-b - Math.sqrt(discriminant)) / (2 * a)
     t2 = (-b + Math.sqrt(discriminant)) / (2 * a)
 
-    # Contrain hits to height of cylinder
+    # Constrain hits to height of cylinder
     y1 = local_ray.position(t1).y
     y2 = local_ray.position(t2).y
 
@@ -59,24 +68,28 @@ class Cylinder < Shape
       elsif (local_point.y - maximum).abs < World::EPSILON
         Tuple.vector(0.0, 1.0, 0.0)
       else
-        Tuple.vector(local_point.x, 0.0, local_point.z)
+        y = local_point.x**2 + local_point.z**2
+        y = -y.abs
+        Tuple.vector(local_point.x, y, local_point.z)
       end
     else
-      Tuple.vector(local_point.x, 0.0, local_point.z)
+      y = Math.sqrt(local_point.x**2 + local_point.z**2)
+      y = -y if local_point.y > 0
+      Tuple.vector(local_point.x, y, local_point.z)
     end
   end
 
   # Check if ray is intersecting cap at t
-  def check_cap(ray, t)
+  def check_cap(ray, t, y)
     p = ray.position(t)
-    p.x**2 + p.z**2 <= 1
+    p.x**2 + p.z**2 <= y.abs
   end
 
   def intersect_caps(local_ray, is)
     t1 = (minimum - local_ray.origin.y) / local_ray.direction.y
     t2 = (maximum - local_ray.origin.y) / local_ray.direction.y
 
-    is << Intersection.new(t1, self) if check_cap(local_ray, t1)
-    is << Intersection.new(t2, self) if check_cap(local_ray, t2)
+    is << Intersection.new(t1, self) if check_cap(local_ray, t1, minimum)
+    is << Intersection.new(t2, self) if check_cap(local_ray, t2, maximum)
   end
 end
