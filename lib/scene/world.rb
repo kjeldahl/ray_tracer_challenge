@@ -37,10 +37,14 @@ class World
     end
   end
 
+  # Calculates the color of an intersection, taking all lights into account
+  #
   def shade_hit(intersection_values, remaining = 1)
     lights.map do |l|
+      obj_material = intersection_values.object.material
+
       surface =
-        PhongLighting.lighting(intersection_values.object.material,
+        PhongLighting.lighting(obj_material,
                                intersection_values.object,
                                l,
                                intersection_values.over_point,
@@ -52,10 +56,20 @@ class World
 
       refracted_color = refracted_color(intersection_values, remaining)
 
+      # Handle transparent and reflective surface
+      if obj_material.transparency > 0 &&
+        obj_material.reflective > 0
+
+        reflectance = intersection_values.schlick
+        reflection *= reflectance
+        refracted_color *= (1 - reflectance)
+      end
+
       surface + reflection + refracted_color
     end.reduce(:+)
   end
 
+  # Intersects the world with the given ray and returns the color
   def color_at(ray, remaining = 5)
     intersections = intersect(ray)
     if intersections.any? && intersections.hit

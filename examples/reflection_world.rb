@@ -27,7 +27,7 @@ class ReflectionWorld
   end
 
   def setup
-    @camera = Camera.new(200, 100, Math::PI / 3)
+    @camera = Camera.new(1800, 900, Math::PI / 3)
 
     @camera.transform = MyMatrix.view_transform(Tuple.point(0.0, 1.5, -5.0),
                                                 Tuple.point(0.0, 1.0, 0.0),

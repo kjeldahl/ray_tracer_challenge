@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Intersection
   attr_reader :t, :object
 
@@ -35,7 +37,8 @@ class Intersection
   private
 
   def compute_n1_n2(intersections)
-    n1, n2 = 0, 0
+    n1 = 0
+    n2 = 0
     containers = []
     intersections.each do |is|
       if is == self
@@ -86,6 +89,23 @@ class Precomputed
 
   def under_point
     @under_point ||= @point - normal * EPSILON
+  end
+
+  def schlick
+    cos = eye_vector.dot(normal) # PERF: Make this a method and cache is also used in World#refracted_color
+
+    if n1 > n2
+      n = n1 / n2
+      sin2_t = n**2 * (1 - cos**2)
+      if sin2_t > 1
+        return 1.0
+      else
+        cos_t = Math.sqrt(1.0 - sin2_t)
+        cos = cos_t
+      end
+    end
+    r0 = ((n1 - n2) / (n1 + n2))**2
+    r0 + (1 - r0) * (1 - cos)**5
   end
 
   # Aliases for satisfying features move to some helper if possible

@@ -70,6 +70,10 @@ Then("{var} {operator} {var} = {var}") do |var1, operator, var2, var3|
   expect(get(var1).send(operator, get(var2))).to eq get(var3)
 end
 
+Then("{var} = {number}") do |var, number|
+  expect(get(var).round(4)).to eq number.round(4)
+end
+
 Then("{var}[{int},{int}] = {number}{operator}{number}") do |var, i, j, counter, operator, quotient|
   expect(get(var).[](i, j)).to eq counter.send(operator, quotient)
 end

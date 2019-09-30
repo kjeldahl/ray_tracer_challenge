@@ -75,3 +75,7 @@ end
 When("{var} ← prepare_computations<{var}, {var}, {var}>") do |var, intersections_var, ray_var, intersections_var2|
   set(var, get(intersections_var).precompute(get(ray_var), get(intersections_var2)))
 end
+
+When("{var} ← schlick<{var}>") do |var, comps_var|
+  set(var, get(comps_var).schlick)
+end
