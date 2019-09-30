@@ -16,6 +16,10 @@ When("{var} ← normalize<{var}>") do |var1, var2|
   set(var1, get(var2).normalize)
 end
 
+When("{var} ← normalize<{vector}>") do |var1, vector|
+  set(var1, vector.normalize)
+end
+
 When("{var} ← reflect<{var}, {var}>") do |var, param_var1, param_var2|
   set(var, get(param_var1).reflect(get(param_var2)))
 end

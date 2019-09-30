@@ -42,6 +42,10 @@ Then('{var}.{word} = {number}') do |var, attr, number|
   expect(get(var).send(attr.to_sym)).to eq(number)
 end
 
+Then('{var}.{word} = -{var}') do |var, attr, var2|
+  expect(get(var).send(attr.to_sym)).to eq(-get(var2))
+end
+
 Then("{var}.{word} = π{operator}{number}") do |var, attr, operator, number|
   expect(get(var).send(attr.to_sym)).to eq(Math::PI.send(operator, number))
 end
@@ -59,7 +63,7 @@ Then("{var}[{int}].{word} = {var}") do |var, idx, attr, result|
 end
 
 Then("{var}[{int}].{word} = {number}") do |var, idx, attr, result|
-  expect(get(var)[idx].send(attr.to_sym)).to eq result
+  expect(get(var)[idx].send(attr.to_sym).round(5)).to eq result.round(5)
 end
 
 Then("{var} is nothing") do |var|

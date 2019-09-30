@@ -11,6 +11,11 @@ end
 When("{var} ← ray<{var}, {var}>") do |var, origin, direction|
   set(var, Ray.new(get(origin), get(direction)))
 end
+
+When("{var} ← ray<{point}, {var}>") do |var, origin, direction|
+  set(var, Ray.new(origin, get(direction)))
+end
+
 When("{var} ← transform<{var}, {var}>") do |var, ray_var, transform_var|
   set(var, get(ray_var).transform(get(transform_var)))
 end
