@@ -80,8 +80,12 @@ When("set_transform<{var}, {scaling}>") do |shape_var, scaling|
   get(shape_var).transform = scaling
 end
 
-When("set_transform<{var}, {translation}>") do |shape_var, scaling|
-  get(shape_var).transform = scaling
+When("set_transform<{var}, {rotation}>") do |shape_var, rotation|
+  get(shape_var).transform = rotation
+end
+
+When("set_transform<{var}, {translation}>") do |shape_var, translation|
+  get(shape_var).transform = translation
 end
 
 When("{var} ← normal_at<{var}, {point}>") do |var, shape_var, point|
@@ -96,3 +100,10 @@ When("{var} ← normal_at<{var}, point<{number}{operator}{number}, {number}{oper
   set(var, get(shape_var).normal_at(Tuple.point(x1.send(op_x, x2), y1.send(op_y, y2), z1.send(op_z, z2))))
 end
 
+When("{var} ← world_to_object<{var}, {point}>") do |var, shape_var, point|
+  set(var, get(shape_var).world_to_object(point))
+end
+
+When("{var} ← normal_to_world<{var}, {var}>") do |var, shape_var, vector_var|
+  set(var, get(shape_var).normal_to_world(get(vector_var)))
+end

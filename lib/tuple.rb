@@ -52,6 +52,10 @@ class Tuple
     Tuple.vector(x / magnitude, y / magnitude, z / magnitude)
   end
 
+  def normal?
+    (magnitude - 1).abs < World::EPSILON
+  end
+
   def dot(other)
     raise "Not a vector! self: #{vector?}, other: #{other.vector?}" unless vector? && other.vector?
 

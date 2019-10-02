@@ -8,6 +8,7 @@ require 'tuple'
 class Shape
 
   attr_accessor :transform, :material
+  attr_accessor :parent
 
   def initialize(transform: MyMatrix.identity, material: Material.new)
     @origin = Tuple.origin
@@ -23,14 +24,32 @@ class Shape
 
   # Note: Assumes point is at surface of shape
   def normal_at(world_point)
-    # PERF: Page 226 in the book check for possible short cut
-    object_point = transform.inverse * world_point
+    object_point = world_to_object(world_point)
 
     object_normal = local_normal_at(object_point)
 
-    world_normal  = transform.inverse.transpose * object_normal
+    normal_to_world(object_normal)
+  end
+
+  def world_to_object(point)
+    if parent
+      point = parent.world_to_object(point)
+    end
+
+    # PERF: Page 226 in the book check for possible short cut
+    transform.inverse * point
+  end
+
+  def normal_to_world(vector)
+    world_normal  = transform.inverse.transpose * vector
     # Basically setting w to zero and then normalize
-    world_normal.to_vector.normalize
+    world_normal = world_normal.to_vector.normalize
+
+    if parent
+      parent.normal_to_world(world_normal)
+    else
+      world_normal
+    end
   end
 
   def ==(other)

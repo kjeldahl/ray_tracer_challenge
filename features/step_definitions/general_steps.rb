@@ -70,6 +70,10 @@ Then("{var} is nothing") do |var|
   expect(get(var)).to be_nil
 end
 
+Then("{var}.{word} is nothing") do |var, attr|
+  expect(get(var).send(attr.to_sym)).to be_nil
+end
+
 Then("{var} {operator} {var} = {var}") do |var1, operator, var2, var3|
   expect(get(var1).send(operator, get(var2))).to eq get(var3)
 end
@@ -116,4 +120,8 @@ end
 
 Then("{var} is empty") do |var|
   expect(get(var)).to be_empty
+end
+
+Then("{var} is not empty") do |var|
+  expect(get(var)).to_not be_empty
 end

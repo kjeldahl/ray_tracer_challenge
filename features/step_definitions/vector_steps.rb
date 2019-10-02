@@ -11,6 +11,9 @@ end
 When("{var} ← vector<{number}, {number}{operator}{number}, {number}{operator}{number}>") do |var, x, y1, op_y, y2, z1, op_z, z2,|
   set(var, Tuple.vector(x, y1.send(op_y, y2), z1.send(op_z, z2)))
 end
+When("{var} ← vector<{number}{operator}{number}, {number}{operator}{number}, {number}{operator}{number}>") do |var, x1, op_x, x2, y1, op_y, y2, z1, op_z, z2|
+  set(var, Tuple.vector(x1.send(op_x, x2), y1.send(op_y, y2), z1.send(op_z, z2)))
+end
 
 When("{var} ← normalize<{var}>") do |var1, var2|
   set(var1, get(var2).normalize)

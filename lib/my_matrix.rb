@@ -154,6 +154,7 @@ class MyMatrix
   end
 
   def transpose
+    # PERF: Cache the transpose
     mb = MatrixBuilder.new
     (0...height).each do |i|
       (0...width).each do |j|
