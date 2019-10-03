@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-require 'intersection'
-require 'intersections'
-
 # Note: This class is not immutable
 class Sphere < Shape
+
+  BOUNDS = Bounds.new(Tuple.point(-1, -1, -1), Tuple.point(1, 1, 1))
+
+  def bounds
+    BOUNDS
+  end
 
   protected
     def local_intersect(local_ray)

@@ -1,8 +1,11 @@
-require 'intersection'
-require 'intersections'
-
 class Plane < Shape
+
   PLANE_NORMAL = Tuple.vector(0.0, 1.0, 0.0).freeze
+  BOUNDS = Bounds.new(Tuple.point(-Float::INFINITY, 0, -Float::INFINITY), Tuple.point(Float::INFINITY, 0, Float::INFINITY))
+
+  def bounds
+    BOUNDS
+  end
 
   # PERF: The normal does not change anyway so no need to convert for all points
   def normal_at(world_point)

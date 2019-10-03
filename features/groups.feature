@@ -46,3 +46,44 @@ Scenario: Intersecting a transformed group
   When r ← ray<point<10, 0, -10>, vector<0, 0, 1>>
     And xs ← intersect<g, r>
   Then xs.count = 2
+
+  Scenario: Bounds for an empty group
+    Given g ← group<>
+    When bounds ← g.bounds
+    Then bounds.min = bounds.max
+
+  Scenario: Bounds for a non-empty group
+    Given g ← group<>
+      And c1 ← test_cube
+      And set_transform<c1, rotation_x<π/4>>
+      And add_child<g, c1>
+    When tb ← g.bounds
+    Then tb.min = point<-1/1, -√2/1, -√2/1>
+      And tb.max = point<1/1, √2/1, √2/1>
+
+  Scenario: Bounds for a group of translated spheres
+    Given g ← group<>
+      And s1 ← sphere<>
+      And s2 ← sphere<>
+      And set_transform<s2, translation<0, 0, -3>>
+      And s3 ← sphere<>
+      And set_transform<s3, translation<5, 0, 0>>
+      And add_child<g, s1>
+      And add_child<g, s2>
+      And add_child<g, s3>
+    When bounds ← g.bounds
+    Then bounds.min = point<-1, -1, -4>
+      And bounds.max = point<6, 1, 1>
+
+  Scenario: Bounds for a group containing translated spheres and non truncated cylinders
+    Given g ← group<>
+    And s1 ← sphere<>
+    And s2 ← sphere<>
+    And set_transform<s2, translation<0, 0, -3>>
+    And c ← test_cylinder
+    And add_child<g, s1>
+    And add_child<g, s2>
+    And add_child<g, c>
+    When bounds ← g.bounds
+    Then bounds.min = point<-1, -∞, -4>
+    And bounds.max = point<1, ∞, 1>

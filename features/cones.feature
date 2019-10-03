@@ -49,3 +49,25 @@ Scenario Outline: Computing the normal vector on a cone
     | point<0, 0, 0>    | vector<0, 0, 0>        |
     | point<1, 1, 1>    | vector<1, -√2, 1>      |
     | point<-1, -1, 0>  | vector<-1, 1, 0>       |
+
+Scenario: An unbounded Cones local bounds
+  Given c ← test_cone
+  When b ← c.bounds
+  Then b.min = point<-∞, -∞, -∞>
+  And b.max = point<∞, ∞, ∞>
+
+Scenario Outline: A bounded cones local bounds
+  Given c ← test_cone
+  When c.minimum ← <min>
+  And c.maximum ← <max>
+  And bounds ← c.bounds
+  Then bounds.min = <bmin>
+  And bounds.max = <bmax>
+
+  Examples:
+    | min | max | bmin              | bmax            |
+    | 0   | 5   | point<-5, 0, -5>  | point<5, 5, 5>  |
+    | -5  | -2  | point<-5, -5, -5> | point<5, -2, 5> |
+    | -5  | 2   | point<-5, -5, -5> | point<5, 2, 5>  |
+    | -5  | ∞   | point<-∞, -5, -∞> | point<∞, ∞, ∞>  |
+

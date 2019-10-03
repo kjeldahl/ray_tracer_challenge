@@ -137,3 +137,9 @@ Scenario: A helper for producing a sphere with a glassy material
   Then s.transform = identity_matrix
     And s.material.transparency = 1.0
     And s.material.refractive_index = 1.5
+
+Scenario: The bounds in object space
+  Given s ← sphere<>
+  When b ← s.bounds
+  Then b.min = point<-1, -1, -1>
+    And b.max = point<1, 1, 1>

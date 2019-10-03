@@ -36,3 +36,9 @@ Scenario: A ray intersecting a plane from below
   Then xs.count = 1
     And xs[0].t = 1
     And xs[0].object = p
+
+Scenario: The bounds in object space
+  Given p ← plane<>
+  When b ← p.bounds
+  Then b.min = point<-∞, 0, -∞>
+  And b.max = point<∞, 0, ∞>

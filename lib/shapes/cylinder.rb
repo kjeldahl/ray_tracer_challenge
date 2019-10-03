@@ -1,15 +1,32 @@
 class Cylinder < Shape
 
-  attr_accessor :minimum, :maximum, :closed
+  attr_reader :minimum, :maximum
+  attr_accessor :closed
 
   # @param [Float] min - not included in the cylinder
   # @param [Float] max - not included in the cylinder
   # @param [bool] closed
-  # @return A newly instantiated cylinder with the given contraints
+  # @return A newly instantiated cylinder with the given constraints
   def initialize(min: -Float::INFINITY, max: Float::INFINITY, closed: false)
+    super()
     @minimum = min
     @maximum = max
     @closed = closed
+  end
+
+  def minimum=(min)
+    @minimum = min
+    @bounds = nil
+  end
+
+  def maximum=(max)
+    @maximum = max
+    @bounds = nil
+  end
+
+  def bounds
+    @bounds ||= Bounds.new(Tuple.point(-1, @minimum, -1),
+                           Tuple.point(1, @maximum, 1))
   end
 
   def local_intersect(local_ray)

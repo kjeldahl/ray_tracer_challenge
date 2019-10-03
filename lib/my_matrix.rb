@@ -234,6 +234,8 @@ class MyMatrix
         (0...width).each do |j|
           v = 0
           (0...4).each do |c|
+            next if self[i, c].zero? || other[c, j].zero? # TODO: Is this reasonable
+
             v += self[i, c] * other[c, j]
           end
 
@@ -247,6 +249,8 @@ class MyMatrix
         (0...1).each do |j|
           v = 0
           (0...4).each do |c|
+            next if other[c].zero? || self[i, c].zero?  # TODO: Is this reasonable. It is here to solve Infinity * 0 => NaN
+
             v += self[i, c] * other[c]
           end
 

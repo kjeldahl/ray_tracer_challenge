@@ -45,6 +45,10 @@ Scenario: The default minimum and maximum for a cylinder
   Then cyl.minimum = -infinity
     And cyl.maximum = infinity
 
+Scenario: The default transform for a cylinder
+  Given cyl ← test_cylinder
+  Then cyl.transform = identity_matrix
+
 Scenario Outline: Intersecting a constrained cylinder
   Given cyl ← test_cylinder
     And cyl.minimum ← 1
@@ -101,3 +105,25 @@ Scenario Outline: The normal vector on a cylinder's end caps
     | point<0, 2, 0>   | vector<0, 1, 0>  |
     | point<0.5, 2, 0> | vector<0, 1, 0>  |
     | point<0, 2, 0.5> | vector<0, 1, 0>  |
+
+Scenario: An unbounded Cylinders local bounds
+  Given c ← test_cylinder
+  When b ← c.bounds
+  Then b.min = point<-1, -∞, -1>
+   And b.max = point<1, ∞, 1>
+
+Scenario Outline: A bounded Cylinders local bounds
+  Given cyl ← test_cylinder
+  When cyl.minimum ← <min>
+    And cyl.maximum ← <max>
+    And bounds ← cyl.bounds
+  Then bounds.min = <bmin>
+    And bounds.max = <bmax>
+
+  Examples:
+    | min | max | bmin              | bmax            |
+    | 0   | 5   | point<-1, 0, -1>  | point<1, 5, 1>  |
+    | -5  | -2  | point<-1, -5, -1> | point<1, -2, 1> |
+    | -5  | -2  | point<-1, -5, -1> | point<1, -2, 1> |
+    | -5  |  ∞  | point<-1, -5, -1> | point<1, ∞, 1> |
+

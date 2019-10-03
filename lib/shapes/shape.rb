@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-require 'scene/material'
+require 'bounds'
+require 'intersection'
+require 'intersections'
 require 'my_matrix'
+require 'scene/material'
 require 'tuple'
 
 # Note: This class is not immutable
@@ -50,6 +53,10 @@ class Shape
     else
       world_normal
     end
+  end
+
+  def bounds
+    raise "Implement in subclass"
   end
 
   def ==(other)

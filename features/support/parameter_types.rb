@@ -6,7 +6,7 @@ require 'my_matrix'
 require 'tuple'
 require 'shapes'
 
-NUMBER_REGEXP = '(-?√?[-+]?(\\d+(\\.\\d+)?|\\.\\d+))' # Must have capture group on entire expression
+NUMBER_REGEXP = '((-?√?[-+]?(\\d+(\\.\\d+)?|\\.\\d+))|-?∞)' # Must have capture group on entire expression
 
 # Converts a string matched by NUMBER_REGEXP to either an Integer or a Float
 def aton(s)
@@ -14,9 +14,21 @@ def aton(s)
   s = s.slice(neg ? 1 : 0, s.length)
   nn = s.delete('√')
   nn = nn == '' ? 0 : nn
-  n  = Float(nn)
-  (s.include?('√') ? Math.sqrt(n) : n) * (neg ? -1 : 1)
+  if nn == "∞"
+    neg ? -Float::INFINITY : Float::INFINITY
+  else
+    n  = Float(nn)
+    (s.include?('√') ? Math.sqrt(n) : n) * (neg ? -1 : 1)
+  end
 end
+
+ParameterType(
+  name: 'attr',
+  regexp: /[a-zA-Z][a-zA-Z_\d]*/,
+  type: Symbol,
+  use_for_snippets: false,
+  transformer: ->(s) { s.to_sym }
+)
 
 ParameterType(
   name: 'var',

@@ -33,7 +33,6 @@ Scenario Outline: A ray misses a cube
     | point<0, 2, 2>   | vector<0, -1, 0>               |
     | point<2, 2, 0>   | vector<-1, 0, 0>               |
 
-
 Scenario Outline: The normal on the surface of a cube
   Given c ← test_cube
     And p ← <point>
@@ -50,3 +49,9 @@ Scenario Outline: The normal on the surface of a cube
     | point<0.4, 0.4, -1>  | vector<0, 0, -1> |
     | point<1, 1, 1>       | vector<1, 0, 0>  |
     | point<-1, -1, -1>    | vector<-1, 0, 0> |
+
+Scenario: A Cubes local bounds
+  Given c ← test_cube
+  When b ← c.bounds
+  Then b.min = point<-1, -1, -1>
+  And b.max = point<1, 1, 1>

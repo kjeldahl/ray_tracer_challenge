@@ -1,6 +1,14 @@
+# frozen_string_literal: true
+
 require 'scene/world'
 
 class Cube < Shape
+
+  BOUNDS = Bounds.new(Tuple.point(-1, -1, -1), Tuple.point(1, 1, 1))
+
+  def bounds
+    BOUNDS
+  end
 
   def local_intersect(local_ray)
     xtmin, xtmax = *check_axis(local_ray.origin.x, local_ray.direction.x)
