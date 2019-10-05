@@ -19,6 +19,14 @@ class Shape
     @material  = material
   end
 
+  def material
+    if @material.default? && parent
+      parent.material # TODO: Consider transformation on material. Should it be transformed to the child?
+    else
+      @material
+    end
+  end
+
   def intersect(ray)
     local_ray = ray.transform(@transform.inverse)
 
