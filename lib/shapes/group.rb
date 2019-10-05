@@ -35,13 +35,19 @@ class Group < Shape
   end
 
   def local_intersect(local_ray)
-    return Intersections.empty unless bounds.local_intersect(local_ray)
-
-    intersections = @children.flat_map { |o| o.intersect(local_ray).to_a }
-    if intersections.empty?
-      Intersections.empty
+    if bounds.local_intersect(local_ray)
+      CallStatistics.add(:group_bounds_hit)
+      intersections = @children.flat_map { |o| o.intersect(local_ray).to_a }
+      if intersections.empty?
+        CallStatistics.add(:group_child_miss)
+        Intersections.empty
+      else
+        CallStatistics.add(:group_child_hit)
+        Intersections.new(*intersections)
+      end
     else
-      Intersections.new(*intersections)
+      CallStatistics.add(:group_bounds_miss)
+      Intersections.empty
     end
   end
 end

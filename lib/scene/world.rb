@@ -31,8 +31,10 @@ class World
   def intersect(ray)
     intersections = @objects.flat_map { |o| o.intersect(ray).to_a }
     if intersections.empty?
+      CallStatistics.add(:world_intersect_miss)
       Intersections.empty
     else
+      CallStatistics.add(:world_intersect_hit)
       Intersections.new(*intersections)
     end
   end
