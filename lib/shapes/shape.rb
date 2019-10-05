@@ -13,7 +13,7 @@ class Shape
   attr_accessor :transform, :material
   attr_accessor :parent
 
-  def initialize(transform: MyMatrix.identity, material: Material.new)
+  def initialize(transform: MyMatrix.identity, material: Material.default)
     @origin = Tuple.origin
     @transform = transform
     @material  = material

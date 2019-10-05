@@ -2,8 +2,8 @@
 
 class Group < Shape
 
-  def initialize
-    super
+  def initialize(transform: MyMatrix.identity, material: Material.default)
+    super(transform: transform, material: material)
     @children = []
   end
 
@@ -16,14 +16,14 @@ class Group < Shape
       child_bounds = @children.map do |child|
         child.bounds.transform(child.transform)
       end
-      @bounds = Bounds.bounds_of_bounds(*child_bounds)
+      @bounds      = Bounds.bounds_of_bounds(*child_bounds)
     end
   end
 
   def add_child(child)
     @children << child
     child.parent = self
-    @bounds = nil
+    @bounds      = nil
   end
 
   def include?(child)

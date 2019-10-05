@@ -6,6 +6,12 @@ class Material
                 :reflective, :transparency, :refractive_index,
                 :pattern
 
+  class << self
+    def default
+      Material.new(default: true)
+    end
+  end
+
   def initialize(color:     Color::WHITE,
                  ambient:   0.1,
                  diffuse:   0.9,
@@ -14,7 +20,8 @@ class Material
                  reflective: 0.0,
                  transparency: 0.0,
                  refractive_index: 1.0,
-                 pattern:   nil)
+                 pattern:   nil,
+                 default: false)
     @color = color
     @ambient = ambient
     @diffuse = diffuse
@@ -24,6 +31,11 @@ class Material
     @transparency = transparency
     @refractive_index = refractive_index
     @pattern = pattern
+    @default = default
+  end
+
+  def default?
+    @default
   end
 
   def ==(other)
