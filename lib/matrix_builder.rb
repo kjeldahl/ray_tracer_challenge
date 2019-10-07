@@ -4,8 +4,15 @@ require 'my_matrix'
 require 'tuple'
 
 class MatrixBuilder
-  def initialize
+  def initialize(width=4, height=4)
     @data = []
+    if block_given?
+      (0...height).each do |i|
+        (0...width).each do |j|
+          self[j, i] = yield(j,i)
+        end
+      end
+    end
   end
 
   def []=(i, j, v)
