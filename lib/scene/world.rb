@@ -19,6 +19,10 @@ class World
     @lights
   end
 
+  def add_light(light)
+    @lights << light
+  end
+
   def objects
     @objects
   end

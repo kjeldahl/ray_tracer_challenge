@@ -8,7 +8,7 @@ class Canvas
     @width = Integer(width)
     @height = Integer(height)
     @pixels = []
-    (0...height).each { |y| @pixels[y] = [Color.new(0.0, 0.0, 0.0)] * width }
+    (0...height).each { |y| @pixels[y] = [Color::BLACK] * width }
     @max_color = 255
   end
 

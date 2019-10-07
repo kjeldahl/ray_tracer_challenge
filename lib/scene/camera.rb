@@ -12,11 +12,11 @@ class Camera
   attr_reader :pixel_size
   attr_accessor :transform
 
-  def initialize(hsize, vsize, fov)
+  def initialize(hsize, vsize, fov, transform: MyMatrix.identity)
     @hsize = Float(hsize)
     @vsize = Float(vsize)
     @fov = fov
-    @transform = MyMatrix.identity
+    @transform = transform
     pre_calc
   end
 
@@ -44,6 +44,7 @@ class Camera
           ray = ray_for_pixel(x, y)
           canvas.write_pixel(x, y, world.color_at(ray))
         end
+        puts "Rendered line: #{y}"
       end
     end
   end
