@@ -31,10 +31,10 @@ class Camera
 
     pixel = transform.inverse * Tuple.point(world_x, world_y, -1.0)
 
-    ray_origin = transform.inverse * Tuple.origin
-    ray_direction = (pixel - ray_origin).to_vector.normalize
+    @ray_origin ||= transform.inverse * Tuple.origin
+    ray_direction = (pixel - @ray_origin).to_normalized_vector
 
-    Ray.new(ray_origin, ray_direction)
+    Ray.new(@ray_origin, ray_direction)
   end
 
   def render(world)

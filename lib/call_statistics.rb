@@ -7,7 +7,7 @@ class CallStatistics
 
     def to_s
       if @stats
-        @stats.map{|k,v| "#{k}: #{v}"}.join("\n")
+        @stats.map{|k,v| "#{k}: #{v}"}.sort.join("\n")
       else
         "n/a"
       end

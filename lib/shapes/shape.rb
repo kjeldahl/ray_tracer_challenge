@@ -43,25 +43,36 @@ class Shape
   end
 
   def world_to_object(point)
-    if parent
-      point = parent.world_to_object(point)
-    end
-
-    # PERF: Page 226 in the book check for possible short cut
-    transform.inverse * point
+    @transform_with_parents ||= calculate_transforms_with_parents(self)
+    @transform_with_parents * point
   end
 
-  def normal_to_world(vector)
-    world_normal  = transform.inverse.transpose * vector
-    # Basically setting w to zero and then normalize
-    world_normal = world_normal.to_vector.normalize
-
-    if parent
-      parent.normal_to_world(world_normal)
+  protected
+  def calculate_transforms_with_parents(shape)
+    if shape.parent
+      shape.transform.inverse * calculate_transforms_with_parents(shape.parent)
     else
-      world_normal
+      shape.transform.inverse
     end
   end
+
+  public
+  def normal_to_world(vector)
+    # PERF: Page 226 in the book check for possible short cut. Which could avoid the normalization call
+    @transform_transposed_with_parents ||= calculate_transposed_transforms_with_parents(self)
+    (@transform_transposed_with_parents * vector).to_normalized_vector
+  end
+
+  protected
+  def calculate_transposed_transforms_with_parents(shape)
+    if shape.parent
+      calculate_transposed_transforms_with_parents(shape.parent) * shape.transform.inverse.transpose
+    else
+      shape.transform.inverse.transpose
+    end
+  end
+  public
+
 
   def bounds
     raise "Implement in subclass"

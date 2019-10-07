@@ -42,14 +42,18 @@ class Tuple
   def magnitude
     raise unless vector?
 
-    @magnitude ||= Math.sqrt(x**2 + y**2 + z**2 + w**2)
+    @magnitude ||= Math.sqrt(x**2 + y**2 + z**2)
+  end
+
+  def _magnitude
+    @magnitude ||= Math.sqrt(x**2 + y**2 + z**2)
   end
 
   def normalize
     # PERF: Could be cached
     raise("Not a vector") unless vector?
 
-    Tuple.vector(x / magnitude, y / magnitude, z / magnitude)
+    Tuple.vector(x / _magnitude, y / _magnitude, z / _magnitude)
   end
 
   def normal?
@@ -87,6 +91,10 @@ class Tuple
 
   def to_vector
     Tuple.vector(x, y, z)
+  end
+
+  def to_normalized_vector
+    Tuple.vector(x / _magnitude, y / _magnitude, z / _magnitude)
   end
 
   def +(other)
@@ -151,5 +159,13 @@ class Tuple
 
   def to_s
     "Tuple(#{x}, #{y}, #{z}, #{w})"
+  end
+
+  def inspect
+    if vector?
+      "Vector[#{x.round(5)}, #{y.round(5)}, #{z.round(5)}]"
+    else
+      "Point[#{x.round(5)}, #{y.round(5)}, #{z.round(5)}]"
+    end
   end
 end

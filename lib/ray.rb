@@ -16,6 +16,8 @@ class Ray
   end
 
   def transform(transformation)
-    Ray.new(transformation * @origin, transformation * @direction)
+    transformed = transformation * [@origin, @direction]
+    Ray.new(transformed[0], transformed[1])
+    # Ray.new(transformation * @origin, transformation * @direction)
   end
 end

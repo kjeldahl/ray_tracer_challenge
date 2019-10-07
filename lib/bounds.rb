@@ -29,6 +29,7 @@ class Bounds
 
   # @return a new Bounds object which contains this object after being transformed
   def transform(transformation)
+    CallStatistics.add(:bounds_transform)
     tc = corners.map { |c| transformation * c }
     xmm = tc.map(&:x).minmax
     ymm = tc.map(&:y).minmax
@@ -38,6 +39,7 @@ class Bounds
 
   # Check for intersection of a local ray
   def local_intersect(local_ray)
+    CallStatistics.add(:bounds_local_intersect)
     xtmin, xtmax = *check_axis(min.x, max.x, local_ray.origin.x, local_ray.direction.x)
     ytmin, ytmax = *check_axis(min.y, max.y, local_ray.origin.y, local_ray.direction.y)
     ztmin, ztmax = *check_axis(min.z, max.z, local_ray.origin.z, local_ray.direction.z)
@@ -46,13 +48,18 @@ class Bounds
     tmax = [xtmax, ytmax, ztmax].min
 
     if tmax > tmin
+      CallStatistics.add(:bounds_local_intersect_hit)
       Intersections.new(Intersection.new(tmin, self),
                         Intersection.new(tmax, self))
     else
+      CallStatistics.add(:bounds_local_intersect_miss)
       Intersections.empty
     end
   end
 
+  def to_s
+    "Bounds(#{min}, #{max})"
+  end
 
   protected
   def corners

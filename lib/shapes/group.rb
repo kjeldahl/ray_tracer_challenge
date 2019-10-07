@@ -2,9 +2,10 @@
 
 class Group < Shape
 
-  def initialize(transform: MyMatrix.identity, material: Material.default)
+  def initialize(transform: MyMatrix.identity, material: Material.default, bounds_check: true)
     super(transform: transform, material: material)
     @children = []
+    @bounds_check = bounds_check
   end
 
   def bounds
@@ -35,8 +36,23 @@ class Group < Shape
   end
 
   def local_intersect(local_ray)
-    if bounds.local_intersect(local_ray)
-      CallStatistics.add(:group_bounds_hit)
+    if @bounds_check
+      if bounds.local_intersect(local_ray).any?
+        CallStatistics.add(:group_bounds_hit)
+        local_children_intersect(local_ray)
+      else
+        CallStatistics.add(:group_bounds_miss)
+        Intersections.empty
+      end
+    else
+      CallStatistics.add(:group_bounds_skipped)
+      local_children_intersect(local_ray)
+    end
+  end
+
+  private
+
+    def local_children_intersect(local_ray)
       intersections = @children.flat_map { |o| o.intersect(local_ray).to_a }
       if intersections.empty?
         CallStatistics.add(:group_child_miss)
@@ -45,9 +61,5 @@ class Group < Shape
         CallStatistics.add(:group_child_hit)
         Intersections.new(*intersections)
       end
-    else
-      CallStatistics.add(:group_bounds_miss)
-      Intersections.empty
     end
-  end
 end

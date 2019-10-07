@@ -1,21 +1,20 @@
 # frozen_string_literal: true
 
+require 'call_statistics'
 require 'matrix_builder'
 require 'tuple'
 
 class MyMatrix
-  attr_reader :width, :height
-
   class << self
     def identity(size = 4)
       raise 'Only 4x4 identity supported' unless size == 4
 
       (@identities ||= [])[size] = MyMatrix.new(size, size, [
-                                                  [1.0, 0.0, 0.0, 0.0],
-                                                  [0.0, 1.0, 0.0, 0.0],
-                                                  [0.0, 0.0, 1.0, 0.0],
-                                                  [0.0, 0.0, 0.0, 1.0]
-                                                ])
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [0.0, 0.0, 1.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+      ])
     end
 
     # region Tranformation Methods
@@ -73,7 +72,7 @@ class MyMatrix
         when :z
           rotation_z(radi)
         else
-        raise "Unknown axis: '#{axis}'"
+          raise "Unknown axis: '#{axis}'"
       end
     end
 
@@ -121,13 +120,6 @@ class MyMatrix
     end
     # endregion
   end
-
-  def initialize(width, height, data)
-    @width  = width
-    @height = height
-    @data   = data
-  end
-
   # region Transformations
   def rotate(axis, radi)
     self.class.rotation(axis, radi) * self
@@ -146,7 +138,16 @@ class MyMatrix
   end
   # endregion
 
+  attr_reader :width, :height
+
+  def initialize(width, height, data)
+    @width  = width
+    @height = height
+    @data   = data
+  end
+
   def [](i, j)
+    # PERF: Leave out the check
     raise if i < 0 || width <= i
     raise if j < 0 || height <= j
 
@@ -155,13 +156,14 @@ class MyMatrix
 
   def transpose
     # PERF: Cache the transpose
-    mb = MatrixBuilder.new
-    (0...height).each do |i|
-      (0...width).each do |j|
-        mb[i, j] = self[j, i]
-      end
-    end
-    mb.to_matrix(height, width) # Height and width are switched on purpose
+    @transposed ||=
+      MatrixBuilder.new.tap do |mb|
+        (0...height).each do |i|
+          (0...width).each do |j|
+            mb[i, j] = self[j, i]
+          end
+        end
+      end.to_matrix(height, width) # Height and width are switched on purpose
   end
 
   def determinant
@@ -226,41 +228,68 @@ class MyMatrix
 
   def *(other)
     case other
-    when MyMatrix
-      raise('Can only multiply 4x4 matrices') unless [4] * 4 == [height, width, other.height, other.width]
+      when MyMatrix
+        raise('Can only multiply 4x4 matrices') unless [4] * 4 == [height, width, other.height, other.width]
 
-      mb = MatrixBuilder.new
-      (0...height).each do |i|
-        (0...width).each do |j|
-          v = 0
-          (0...4).each do |c|
-            next if self[i, c].zero? || other[c, j].zero? # TODO: Is this reasonable
+        CallStatistics.add(:matrix_mul_matrix)
+        MatrixBuilder.new.tap do |mb|
+          (0...height).each do |i|
+            (0...width).each do |j|
+              v = 0
+              (0...4).each do |c|
+                next if self[i, c].zero? || other[c, j].zero? # TODO: Is this reasonable
 
-            v += self[i, c] * other[c, j]
+                v += self[i, c] * other[c, j]
+              end
+
+              mb[i, j] = v
+            end
+          end
+        end.to_matrix(width, height)
+      when Tuple
+        CallStatistics.add(:matrix_mul_tuple)
+        MatrixBuilder.new.tap do |mb|
+          (0...height).each do |i|
+            j = 0
+            v = 0
+            (0...4).each do |c|
+              oc  = other[c] # PERF: Gives about 1 sec on hexagon
+              sic = self[i, c]
+              next if oc.zero? || sic.zero? # TODO: Is this reasonable. It is here to solve Infinity * 0 => NaN
+
+              v += sic * oc
+            end
+
+            mb[i, j] = v
           end
 
-          mb[i, j] = v
-        end
-      end
-      mb.to_matrix(width, height)
-    when Tuple
-      mb = MatrixBuilder.new
-      (0...height).each do |i|
-        (0...1).each do |j|
-          v = 0
+        end.to_tuple(height)
+      when Array
+        CallStatistics.add(:matrix_mul_tuples)
+        o1, o2 = *other # TODO: We assume that it is Tuples
+        mb1 = MatrixBuilder.new
+        mb2 = MatrixBuilder.new
+        (0...height).each do |i|
+          j = 0
+          v1 = 0
+          v2 = 0
           (0...4).each do |c|
-            next if other[c].zero? || self[i, c].zero?  # TODO: Is this reasonable. It is here to solve Infinity * 0 => NaN
+            o1c  = o1[c] # PERF: Gives about 1 sec on hexagon
+            o2c  = o2[c] # PERF: Gives about 1 sec on hexagon
+            sic = self[i, c]
+            next if sic.zero? # TODO: Is this reasonable. It is here to solve Infinity * 0 => NaN
 
-            v += self[i, c] * other[c]
+            v1 += sic * o1c unless o1c.zero?
+            v2 += sic * o2c unless o2c.zero?
           end
 
-          mb[i, j] = v
+          mb1[i, j] = v1
+          mb2[i, j] = v2
         end
-      end
-      mb.to_tuple(height)
 
-    else
-      raise "Cannot multiply Tuple with #{other.class}"
+        [mb1.to_tuple(height), mb2.to_tuple(height)]
+      else
+        raise "Cannot multiply Tuple with #{other.class}"
     end
   end
 
@@ -287,5 +316,7 @@ class MyMatrix
 
   protected
 
-  attr_reader :data
+    attr_reader :data
+
 end
+
