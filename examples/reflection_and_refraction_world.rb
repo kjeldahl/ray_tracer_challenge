@@ -30,7 +30,7 @@ class ReflectionAndRefractionWorld
   end
 
   def setup
-    SceneLoader.new("examples/reflection_and_refraction.yaml").tap do |loader|
+    SceneLoader.new("examples/christmas.yml").tap do |loader|
       loader.load
       @renderer = Renderer.new(loader.camera, loader.world)
     end
@@ -41,7 +41,7 @@ class ReflectionAndRefractionWorld
   end
 
   def dump_canvas
-    File.open("reflection_and_refraction_world.ppm", 'w') do |f|
+    File.open("christmas.ppm", 'w') do |f|
       f << @canvas.to_ppm
     end
   end

@@ -25,8 +25,8 @@ class Hexagon
                    )
     end
 
-    def side(transform)
-      Group.new(transform: transform).tap do |side|
+    def side(transform, material: Material.default)
+      Group.new(transform: transform, material: material).tap do |side|
         side.add_child(corner)
         side.add_child(edge)
       end

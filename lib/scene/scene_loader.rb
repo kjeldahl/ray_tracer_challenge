@@ -41,6 +41,8 @@ class SceneLoader
         add_plane(instr)
       when "sphere"
         add_sphere(instr)
+      when "cylinder"
+        add_cylinder(instr)
       else
         output.puts "Ignoring add of #{instr.first[1]}"
     end
@@ -81,6 +83,15 @@ class SceneLoader
     @world.objects <<
       Sphere.new(transform: transform(instr['transform']),
                  material: material(instr['material']))
+  end
+
+  def add_cylinder(instr)
+    @world.objects <<
+      Cylinder.new(min: instr['min'],
+                   max: instr['max'],
+                   closed: instr['closed'],
+                   transform: transform(instr['transform']),
+                   material: material(instr['material']))
   end
 
   protected

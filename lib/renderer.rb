@@ -79,7 +79,7 @@ class Renderer
   end
 
   def dump_canvas(canvas)
-    File.open("reflection_and_refraction_world.ppm", 'w') do |f|
+    File.open("christmas.ppm", 'w') do |f|
       f << canvas.to_ppm
     end
   end

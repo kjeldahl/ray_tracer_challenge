@@ -30,7 +30,7 @@ class Hexagon
   end
 
   def setup
-    @camera = Camera.new(300, 150, Math::PI / 3)
+    @camera = Camera.new(600, 300, Math::PI / 3)
 
     @camera.transform = MyMatrix.view_transform(Tuple.point(0.0, 2.5, -5.0),
                                                 Tuple.point(0.0, 1.0, 0.0),
@@ -41,13 +41,14 @@ class Hexagon
     # lights << PointLight.new(Tuple.point(0.0, 10.0, -10.0), Color::WHITE * 0.35)
     # lights << PointLight.new(Tuple.point(10.0, 5.0, -10.0), Color::WHITE * 0.5)
 
-    @world = World.new(lights: lights)
+    @world = World.new(lights: lights, shadows: true)
 
     @floor = Plane.new(material: Material.new(color: Color.new(1.0, 0.9, 0.9),
                                               specular: 0.0,
                                               #reflective: 0.4,
                                               pattern: CheckersPattern.new(Color::WHITE * 0.8, Color::BLACK + 0.2,
-                                                                           transform: MyMatrix.scale(0.25, 0.25, 0.25))))
+                                                                           transform: MyMatrix.scale(0.25, 0.25, 0.25))
+    ))
 
     @hexagon = Hexagon.build(material:  Material.new(color:      Color::YELLOW,
                                                      specular:   0.2,
@@ -59,6 +60,9 @@ class Hexagon
                                translate(0, 1, 0)
     )
 
+    @side = Hexagon.side(MyMatrix.
+                         scale(1.0, 1.0, 1.0).
+                         translate(0, 2, 0))
     @world.objects << @floor
     @world.objects << @hexagon
   end
