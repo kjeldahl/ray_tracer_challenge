@@ -7,8 +7,8 @@ class Cone < Shape
   # @param [Float] max - not included in the cone
   # @param [bool] closed
   # @return A newly instantiated cone with the given constraints
-  def initialize(min: -Float::INFINITY, max: Float::INFINITY, closed: false, transform: MyMatrix.identity, material: Material.default)
-    super(transform: transform, material: material)
+  def initialize(min: -Float::INFINITY, max: Float::INFINITY, closed: false, transform: MyMatrix.identity, material: Material.default, shadow: true)
+    super(transform: transform, material: material, shadow: shadow)
     @minimum = min
     @maximum = max
     @closed = closed

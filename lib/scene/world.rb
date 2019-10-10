@@ -93,7 +93,7 @@ class World
     light_ray = Ray.new(point, light_direction.normalize)
 
     intersections = intersect(light_ray)
-    if intersections.hit
+    if intersections.shadow_hit
       # Check if intersection is between the light and the point
       intersections.hit.t < light_direction.magnitude
     else

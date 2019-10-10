@@ -43,6 +43,10 @@ class SceneLoader
         add_sphere(instr)
       when "cylinder"
         add_cylinder(instr)
+      when "cube"
+        add_cube(instr)
+      when "fir_branch"
+        add_fir_branch(instr)
       else
         output.puts "Ignoring add of #{instr.first[1]}"
     end
@@ -76,13 +80,15 @@ class SceneLoader
   def add_plane(instr)
     @world.objects <<
       Plane.new(transform: transform(instr['transform']),
-                material: material(instr['material']))
+                material: material(instr['material']),
+                shadow: !!instr['shadow'])
   end
 
   def add_sphere(instr)
     @world.objects <<
       Sphere.new(transform: transform(instr['transform']),
-                 material: material(instr['material']))
+                 material: material(instr['material']),
+                 shadow: instr['shadow'].nil? ? true : instr['shadow'])
   end
 
   def add_cylinder(instr)
@@ -91,7 +97,20 @@ class SceneLoader
                    max: instr['max'],
                    closed: instr['closed'],
                    transform: transform(instr['transform']),
-                   material: material(instr['material']))
+                   material: material(instr['material']),
+                   shadow: !!instr['shadow'])
+  end
+
+  def add_cube(instr)
+    @world.objects <<
+      Cube.new(transform: transform(instr['transform']),
+               material: material(instr['material']),
+               shadow: !!instr['shadow'])
+  end
+
+  def add_fir_branch(instr)
+    @world.objects <<
+      FirBranch.build(transform: transform(instr['transform']))
   end
 
   protected
@@ -170,9 +189,9 @@ class SceneLoader
   end
 end
 
-SceneLoader.new("examples/reflection_and_refraction.yaml").tap do |sl|
-  sl.load
-  puts "Camera: #{sl.camera.inspect}"
-  puts "World: #{sl.world.inspect}"
-  puts "Definitions: #{sl.definitions.inspect}"
-end
+# SceneLoader.new("examples/christmas.yml").tap do |sl|
+#   sl.load
+#   puts "Camera: #{sl.camera.inspect}"
+#   puts "World: #{sl.world.inspect}"
+#   puts "Definitions: #{sl.definitions.inspect}"
+# end

@@ -2,8 +2,9 @@
 
 class Group < Shape
 
-  def initialize(transform: MyMatrix.identity, material: Material.default, bounds_check: true)
-    super(transform: transform, material: material)
+  # TODO: Shadow for group is dependent on the children
+  def initialize(transform: MyMatrix.identity, material: Material.default, bounds_check: true, shadow: true)
+    super(transform: transform, material: material, shadow: shadow)
     @children = []
     @bounds_check = bounds_check
   end

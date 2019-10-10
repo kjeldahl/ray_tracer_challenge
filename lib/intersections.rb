@@ -12,7 +12,17 @@ class Intersections
 
   def hit
     # PERF: Cache hit
-    @intersections.reject { |i| i.t < 0 }.min_by(&:t)
+    @hit ||=
+      @intersections.
+        reject { |i| i.t < 0 }.
+        min_by(&:t)
+  end
+
+  def shadow_hit
+    @intersections.
+      reject { |i| i.t < 0 }.
+      select { |i| i.object.shadow }.
+      min_by(&:t)
   end
 
   def count

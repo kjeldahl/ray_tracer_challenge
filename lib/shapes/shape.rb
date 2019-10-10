@@ -12,11 +12,13 @@ class Shape
 
   attr_accessor :transform, :material
   attr_accessor :parent
+  attr_reader   :shadow
 
-  def initialize(transform: MyMatrix.identity, material: Material.default)
+  def initialize(transform: MyMatrix.identity, material: Material.default, shadow: true)
     @origin = Tuple.origin
     @transform = transform
     @material  = material
+    @shadow = shadow
   end
 
   def material
