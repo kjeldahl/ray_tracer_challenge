@@ -20,7 +20,6 @@ class ReflectionAndRefractionWorld
       ReflectionAndRefractionWorld.new.tap do |cam|
         cam.setup
         cam.draw
-        cam.dump_canvas
       end
       t2 = Time.now
       puts "Render time: #{t2-t1} seconds"
@@ -30,9 +29,9 @@ class ReflectionAndRefractionWorld
   end
 
   def setup
-    SceneLoader.new("examples/christmas.yml").tap do |loader|
+    SceneLoader.new("examples/refraction_sphere.yml").tap do |loader|
       loader.load
-      @renderer = Renderer.new(loader.camera, loader.world)
+      @renderer = Renderer.new(loader.camera, loader.world, dump_file: "refraction_sphere.ppm")
     end
   end
 
@@ -40,11 +39,6 @@ class ReflectionAndRefractionWorld
     @canvas = @renderer.render
   end
 
-  def dump_canvas
-    File.open("christmas.ppm", 'w') do |f|
-      f << @canvas.to_ppm
-    end
-  end
 end
 
 ReflectionAndRefractionWorld.run

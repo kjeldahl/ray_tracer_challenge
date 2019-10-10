@@ -1,0 +1,46 @@
+- add: camera
+  width: 800
+  height: 800
+  field-of-view: 1.047
+  from: [0, 2.5, 0]
+  to: [0, 0, 0]
+  up: [1, 0, 0]
+
+- add: light
+  type: "pointlight"
+  at: [20, 10, 0]
+  intensity: [0.7, 0.7, 0.7]
+
+# Floor
+- add: plane
+  transform:
+    - [ translate, 0.0, -10.1, 0]
+  material:
+    pattern:
+      type: checkers
+      colors:
+        - [1, 1, 1] # White
+        - [0, 0, 0] # Black
+    transform:
+      - [ translate, 0.0, 0.1, 0]
+
+
+# Glass Sphere
+- add: sphere
+  material:
+    diffuse: 0.1
+    shininess: 300
+    reflective: 1.0
+    transparency: 1
+    refractive-index: 1.52
+
+# Air Sphere
+- add: sphere
+  transform:
+    - [ scale, 0.5, 0.5, 0.5]
+  material:
+    diffuse: 0.1
+    shininess: 300
+    reflective: 1.0
+    transparency: 1
+    refractive-index: 1.0
