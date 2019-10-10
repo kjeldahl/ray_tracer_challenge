@@ -46,10 +46,10 @@ class World
   # Calculates the color of an intersection, taking all lights into account
   #
   def shade_hit(intersection_values, remaining = 1)
-    lights.map do |l|
-      obj_material = intersection_values.object.material
+    obj_material = intersection_values.object.material
 
-      surface =
+    surface =
+      lights.map do |l|
         PhongLighting.lighting(obj_material,
                                intersection_values.object,
                                l,
@@ -57,22 +57,22 @@ class World
                                intersection_values.eye_vector,
                                intersection_values.normal,
                                shadowed?(intersection_values.over_point, l))
+      end.inject(&:+)
 
-      reflection = reflected_color(intersection_values, remaining)
+    reflection = reflected_color(intersection_values, remaining)
 
-      refracted_color = refracted_color(intersection_values, remaining)
+    refracted_color = refracted_color(intersection_values, remaining)
 
-      # Handle transparent and reflective surface
-      if obj_material.transparency > 0 &&
-        obj_material.reflective > 0
+    # Handle transparent and reflective surface
+    if obj_material.transparency > 0 &&
+      obj_material.reflective > 0
 
-        reflectance = intersection_values.schlick
-        reflection *= reflectance
-        refracted_color *= (1 - reflectance)
-      end
+      reflectance = intersection_values.schlick
+      reflection *= reflectance
+      refracted_color *= (1 - reflectance)
+    end
 
-      surface + reflection + refracted_color
-    end.reduce(:+)
+    surface + reflection + refracted_color
   end
 
   # Intersects the world with the given ray and returns the color
