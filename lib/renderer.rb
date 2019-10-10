@@ -1,8 +1,9 @@
 class Renderer
 
-  def initialize(camera, world)
+  def initialize(camera, world, dump_file: nil)
     @camera = camera
     @world = world
+    @dump_file = dump_file
   end
 
   def render
@@ -19,7 +20,7 @@ class Renderer
 
         if idx % @camera.hsize == 0
           puts "Rendered line: #{Integer(idx / @camera.hsize)}"
-          if idx % (@camera.hsize * 10) == 0
+          if idx % (@camera.hsize * 10) == 0 && @dump_file
             Thread.new do
               puts "Dumping Canvas"
               dump_canvas(canvas)
@@ -42,18 +43,20 @@ class Renderer
             x, y = *xy
             ray = @camera.ray_for_pixel(x, y)
             canvas.write_pixel(x, y, @world.color_at(ray))
-            if idx % @camera.hsize == 0
-              puts "Rendered line: #{Integer(idx / @camera.hsize)}"
-            end
+            # if idx % @camera.hsize == 0
+            #   puts "Rendered line: #{Integer(idx / @camera.hsize)}"
+            # end
           end
         end
       end
 
       while threads.any?(&:alive?) do
-        threads.find(&:alive?)&.join(5)
+        threads.find(&:alive?)&.join(10)
         puts "Dumping Canvas"
         dump_canvas(canvas)
       end
+      puts "Dumping Canvas"
+      dump_canvas(canvas)
     end
   end
 
@@ -79,7 +82,7 @@ class Renderer
   end
 
   def dump_canvas(canvas)
-    File.open("christmas.ppm", 'w') do |f|
+    File.open(@dump_file, 'w') do |f|
       f << canvas.to_ppm
     end
   end
