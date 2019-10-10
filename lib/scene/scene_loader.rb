@@ -74,7 +74,9 @@ class SceneLoader
 
   def add_light(instr)
     @world.add_light PointLight.new(point(instr['at']),
-                                    color(instr['intensity']))
+                                    color(instr['intensity']),
+                                    intensity_ambient: instr['intensity-ambient'] || 1.0,
+                                    intensity_diffuse: instr['intensity-diffuse'] || 1.0)
   end
 
   def add_plane(instr)

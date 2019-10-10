@@ -6,7 +6,7 @@ class PhongLighting
     def lighting(material, object, light, position, eyev, normal, in_shadow=false)
       effective_color = material_color(material, object, position) * light.intensity
 
-      ambient = effective_color * material.ambient
+      ambient = effective_color * material.ambient * light.intensity_ambient
 
       return ambient if in_shadow
 
@@ -23,7 +23,7 @@ class PhongLighting
         specular = Color::BLACK
       else
         # compute the diffuse contribution​
-        diffuse = effective_color * material.diffuse * light_dot_normal
+        diffuse = effective_color * material.diffuse  * light.intensity_diffuse * light_dot_normal
 
         # reflect_dot_eye represents the cosine of the angle between the​
         # reflection vector and the eye vector. A negative number means the​

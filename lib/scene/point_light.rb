@@ -1,9 +1,12 @@
 class PointLight
   attr_reader :position, :intensity
+  attr_reader :intensity_diffuse, :intensity_ambient
 
-  def initialize(position, intensity)
+  def initialize(position, intensity, intensity_diffuse: 1.0, intensity_ambient: 1.0)
     @position = position
     @intensity = intensity
+    @intensity_diffuse = intensity_diffuse
+    @intensity_ambient = intensity_ambient
   end
 
   def ==(other)
@@ -15,7 +18,7 @@ class PointLight
   alias eql? ==
 
   def hash
-    @hash ||= [intensity, position].hash
+    @hash ||= [intensity, position, intensity_diffuse, intensity_ambient].hash
   end
 
 end
