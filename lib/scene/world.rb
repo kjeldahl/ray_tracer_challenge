@@ -5,10 +5,13 @@ require 'scene/phong_lighting'
 class World
   EPSILON = 0.00001
 
-  def initialize(light: nil, lights: [], shadows: true)
+  attr_reader :max_reflections
+
+  def initialize(light: nil, lights: [], shadows: true, max_reflections: 10)
     @lights = [light, lights].compact.flatten.compact
     @objects = []
     @shadows = shadows
+    @max_reflections = max_reflections
   end
 
   def light
@@ -76,7 +79,7 @@ class World
   end
 
   # Intersects the world with the given ray and returns the color
-  def color_at(ray, remaining = 5)
+  def color_at(ray, remaining = max_reflections)
     intersections = intersect(ray)
     if intersections.any? && intersections.hit
       precomps = intersections.hit.precompute(ray, intersections)
