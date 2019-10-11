@@ -7,7 +7,7 @@ class World
 
   attr_reader :max_reflections
 
-  def initialize(light: nil, lights: [], shadows: true, max_reflections: 10)
+  def initialize(light: nil, lights: [], shadows: true, max_reflections: 5)
     @lights = [light, lights].compact.flatten.compact
     @objects = []
     @shadows = shadows

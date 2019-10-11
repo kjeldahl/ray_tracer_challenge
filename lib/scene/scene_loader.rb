@@ -4,6 +4,7 @@ require 'my_matrix'
 require 'patterns'
 require 'scene'
 require 'shapes'
+require 'util/obj_loader'
 
 class SceneLoader
   attr_reader :world, :camera, :definitions, :output
@@ -47,6 +48,8 @@ class SceneLoader
         add_cube(instr)
       when "fir_branch"
         add_fir_branch(instr)
+      when "obj-file"
+        add_obj_file(instr)
       else
         output.puts "Ignoring add of #{instr.first[1]}"
     end
@@ -57,12 +60,7 @@ class SceneLoader
     value = instr['value']
     # TODO: Hard coded for now
 
-    @definitions[name] = Material.new(ambient: value['ambient'],
-                                      diffuse: value['diffuse'],
-                                      specular: value['specular'],
-                                      reflective: value['reflective'],
-                                      pattern: pattern(value['pattern'])
-                                      )
+    @definitions[name] = material(value)
   end
 
   def add_camera(instr)
@@ -113,6 +111,15 @@ class SceneLoader
   def add_fir_branch(instr)
     @world.objects <<
       FirBranch.build(transform: transform(instr['transform']))
+  end
+
+  def add_obj_file(instr)
+    @world.objects <<
+      ObjLoader.load(File.join(File.dirname(@file_path), instr['filename'])).tap do |obj|
+        obj.transform = transform(instr['transform'])
+        obj.material = material(instr['material'])
+        obj.shadow = !!instr['shadow']
+      end
   end
 
   protected

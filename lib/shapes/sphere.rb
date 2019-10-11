@@ -28,7 +28,7 @@ class Sphere < Shape
       end
     end
 
-    def local_normal_at(local_point)
+    def local_normal_at(local_point, intersection=nil)
       local_point - @origin
     end
 end

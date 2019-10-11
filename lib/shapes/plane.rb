@@ -8,8 +8,8 @@ class Plane < Shape
   end
 
   # PERF: The normal does not change anyway so no need to convert for all points
-  def normal_at(world_point)
-    @plane_normal ||= super(world_point)
+  def normal_at(world_point, intersection=nil)
+    @plane_normal ||= super(world_point, intersection)
   end
 
   protected
@@ -23,7 +23,7 @@ class Plane < Shape
       end
     end
 
-    def local_normal_at(_)
+    def local_normal_at(_, _=nil)
       PLANE_NORMAL
     end
 end

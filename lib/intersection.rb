@@ -2,15 +2,18 @@
 
 class Intersection
   attr_reader :t, :object
+  attr_reader :u, :v
 
-  def initialize(t, object)
+  def initialize(t, object, u: nil, v: nil)
     @t = t
     @object = object
+    @u = u
+    @v = v
   end
 
   def precompute(ray, intersections = Intersections.new(self))
     hit_point = ray.position(t)
-    normal = object.normal_at(hit_point)
+    normal = object.normal_at(hit_point, self)
     eye_direction = -ray.direction
 
     reflectv = ray.direction.reflect(normal.normalize)

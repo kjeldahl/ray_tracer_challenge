@@ -13,3 +13,7 @@ end
 Then("{var} includes {var}") do |group_var, child_var|
   expect(get(group_var).include?(get(child_var))).to eq true
 end
+
+When("{var} ← {order_number} child of {var}") do |var, number, group_var|
+  set(var, get(group_var).child_at(number))
+end

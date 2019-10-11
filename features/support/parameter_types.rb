@@ -149,3 +149,13 @@ ParameterType(
   type: Sphere,
   transformer: ->(s) { Sphere.new(material: Material.new(transparency: 1.0, refractive_index: 1.5)) }
 )
+
+ParameterType(
+  name: 'order_number',
+  regexp: /first|second|third/,
+  type: Integer,
+  transformer: ->(number) do
+    {"first": 1, "second": 2, "third": 3}[number.to_sym]
+  end
+)
+

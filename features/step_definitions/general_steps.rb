@@ -125,3 +125,7 @@ end
 Then("{var} is not empty") do |var|
   expect(get(var)).to_not be_empty
 end
+
+Then("{var}.{word} = {var}.{word}[{int}]") do |var, attr, var2, attr2, idx|
+  expect(get(var).send(attr.to_sym)).to eq get(var2).send(attr2.to_sym)[idx]
+end

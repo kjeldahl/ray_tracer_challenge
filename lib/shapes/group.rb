@@ -28,6 +28,10 @@ class Group < Shape
     @bounds      = nil
   end
 
+  def child_at(one_based_index)
+    @children[one_based_index - 1]
+  end
+
   def include?(child)
     @children.include?(child)
   end

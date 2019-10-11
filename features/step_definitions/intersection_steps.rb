@@ -60,6 +60,10 @@ And("{var} ← intersections<{number}{operator}{number}:{var}, {number}{operator
                        ))
 end
 
+When("{var} ← intersection_with_uv<{number}, {var}, {number}, {number}>") do |var, number, var3, number2, number3|
+  set(var, Intersection.new(number, get(var3), u: number2, v: number3))
+end
+
 When("{var} ← hit<{var}>") do |var, var2|
   set(var, get(var2).hit)
 end

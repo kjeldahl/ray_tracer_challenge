@@ -41,10 +41,10 @@ class Triangle < Shape
     return Intersections.empty if v < 0 || (u + v) > 1
 
     t = f * e2.dot(origin_cross_e1)
-    Intersections.new(Intersection.new(t, self))
+    Intersections.new(Intersection.new(t, self, u: u, v: v))
   end
 
-  def local_normal_at(local_point)
+  def local_normal_at(local_point, intersection=nil)
     @normal
   end
 

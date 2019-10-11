@@ -15,7 +15,7 @@ class TestShape < Shape
     Intersections.empty
   end
 
-  def local_normal_at(local_point)
+  def local_normal_at(local_point, intersection=nil)
     local_point.to_vector
   end
 

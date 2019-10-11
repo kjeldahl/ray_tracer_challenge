@@ -26,7 +26,7 @@ class Cube < Shape
     end
   end
 
-  def local_normal_at(local_point)
+  def local_normal_at(local_point, intersection=nil)
     if (local_point.x.abs - 1.0).abs < World::EPSILON
       Tuple.vector(local_point.x, 0.0, 0.0)
     elsif (local_point.y.abs - 1.0).abs < World::EPSILON

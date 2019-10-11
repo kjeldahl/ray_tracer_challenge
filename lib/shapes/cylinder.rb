@@ -68,7 +68,7 @@ class Cylinder < Shape
     end
   end
 
-  def local_normal_at(local_point)
+  def local_normal_at(local_point, intersection=nil)
     if closed
       # Check if we are at the caps
       if (local_point.y - minimum).abs < World::EPSILON

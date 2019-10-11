@@ -21,6 +21,10 @@ Then("{var}.{attr} = point<{number}{operator}{number}, {number}{operator}{number
   expect(get(var).send(attr)).to eq Tuple.point(x1.send(op_x, x2), y1.send(op_y, y2), z1.send(op_z, z2))
 end
 
+Then("{var}.{word}[{int}] = {point}") do |var, attr, idx, point|
+  expect(get(var).send(attr.to_sym)[idx]).to eq point
+end
+
 Then("{var} = {point}") do |var, point|
   expect(get(var)).to eq point
 end
