@@ -172,7 +172,7 @@ class SceneLoader
   def material(v)
     case v
       when Hash
-        Material.new(color: color(v['color']) || Color::WHITE,
+        Material.new(color: color(v['color']) || color(v['colour']) || Color::WHITE,
                      ambient: v['ambient'] || 0.1,
                      diffuse: v['diffuse'] || 0.9,
                      specular: v['specular'] || 0.9,
