@@ -115,7 +115,7 @@ class SceneLoader
 
   def add_obj_file(instr)
     @world.objects <<
-      ObjLoader.load(File.join(File.dirname(@file_path), instr['filename'])).tap do |obj|
+      ObjLoader.load(File.join(File.dirname(@file_path), instr['filename']), grouping: !!instr['grouping']).tap do |obj|
         obj.transform = transform(instr['transform'])
         obj.material = material(instr['material'])
         obj.shadow = !!instr['shadow']

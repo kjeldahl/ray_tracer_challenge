@@ -11,9 +11,9 @@ class ObjLoader
   FACE_ELEM_REGEXP = "(\\d+)(\\/(\\d*)\\/(\\d+))?"
 
   class << self
-    def load(filename)
+    def load(filename, grouping: false)
       parser = ObjLoader.new
-      parser.parse(File.read(filename))
+      parser.parse(File.read(filename), grouping: grouping)
       if parser.ignored_lines.any?
         STDERR.puts "Ignoring the following lines"
         STDERR.puts parser.ignored_lines.map{|l,n| "#{n}: #{l}"}
@@ -22,29 +22,29 @@ class ObjLoader
     end
   end
 
-  def parse(obj_file_content)
+  def parse(obj_file_content, grouping: false)
+    @grouping = grouping
     @ignored_lines = []
     @current_group = "DefaultGroup"
+    group_nr = 0
+    create_new_group = grouping
+
     obj_file_content.split("\n").each_with_index do |line, line_number|
       case line.strip
         when /\Av\s+#{NUMBER_REGEXP} #{NUMBER_REGEXP} #{NUMBER_REGEXP}\z/
+          if create_new_group
+            @current_group = "Grouping-#{group_nr}"
+            group_nr += 1
+            create_new_group = false
+          end
           add_vertex(Float($1), Float($3), Float($5))
 
         when /\Avn\s+#{NUMBER_REGEXP} #{NUMBER_REGEXP} #{NUMBER_REGEXP}\z/
           add_vertex_normal(Float($1), Float($3), Float($5))
 
-        when /\Af\s+(\d+) (\d+) (\d+)\z/
-          add_face(Integer($1), Integer($2), Integer($3))
-
-        when /\Af\s+#{FACE_ELEM_REGEXP} #{FACE_ELEM_REGEXP} #{FACE_ELEM_REGEXP}\z/
-          #1,3,4   5,7,8   9,11,12
-          add_face(Integer($1), Integer($5), Integer($9), n1: Integer($4), n2: Integer($8), n3: Integer($12))
-
-        when /\Af\s*((\s#{FACE_ELEM_REGEXP}){4,}+)\z/
+        when /\Af\s*((\s#{FACE_ELEM_REGEXP})+)\z/
+          create_new_group = grouping
           add_polygon(*$1.split(" ").map{|i| i.split("/").map(&:to_i)})
-
-        when /\Af\s*((\s\d+){4,}+)\z/
-          add_polygon(*$1.split(" ").map{|i| Integer(i)})
 
         when /\Ag\s+(\w+)\z/
           @current_group = $1
