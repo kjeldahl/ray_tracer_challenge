@@ -41,12 +41,20 @@ class Intersections
     @intersections.each(&block)
   end
 
+  def select(&block)
+    @intersections.select(&block)
+  end
+
   def any?
     @intersections.count > 0
   end
 
   def empty?
     @intersections.count == 0
+  end
+
+  def combine(other_intersections)
+    Intersections.new(*(@intersections + other_intersections.to_a))
   end
 
   def to_a

@@ -144,6 +144,13 @@ ParameterType(
 )
 
 ParameterType(
+  name: 'cube',
+  regexp: /cube<>/,
+  type: Cube,
+  transformer: ->(s) { Cube.new }
+)
+
+ParameterType(
   name: 'glass_sphere',
   regexp: /glass_sphere<>/,
   type: Sphere,
@@ -157,5 +164,19 @@ ParameterType(
   transformer: ->(number) do
     {"first": 1, "second": 2, "third": 3}[number.to_sym]
   end
+)
+
+ParameterType(
+  name: 'csg_op',
+  regexp: /"(union|intersection|difference)"/,
+  type: Symbol,
+  transformer: ->(op) { op.to_sym }
+)
+
+ParameterType(
+  name: 'bool',
+  regexp: /true|false/,
+  type: Object,
+  transformer: ->(bool) { bool == "true" }
 )
 

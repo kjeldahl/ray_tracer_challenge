@@ -49,6 +49,10 @@ class Shape
     @transform_with_parents * point
   end
 
+  def include?(child)
+    self == child
+  end
+
   protected
 
     def calculate_transforms_with_parents(shape)
