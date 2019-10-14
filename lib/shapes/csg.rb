@@ -2,6 +2,8 @@ class CSG < Shape
 
   attr_reader :left, :right, :operation
 
+  # TODO: Need to implement bounds
+
   def initialize(left, op, right, transform: MyMatrix.identity, material: Material.default, bounds_check: true, shadow: true)
     super(transform: transform, material: material, shadow: shadow)
     @bounds_check = bounds_check

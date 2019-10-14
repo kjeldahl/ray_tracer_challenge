@@ -46,6 +46,8 @@ class SceneLoader
         add_cylinder(instr)
       when "cube"
         add_cube(instr)
+      when "csg"
+        add_csg(instr)
       when "fir_branch"
         add_fir_branch(instr)
       when "obj-file"
@@ -58,9 +60,12 @@ class SceneLoader
   def define_stuff(instr)
     name = instr.first[1]
     value = instr['value']
-    # TODO: Hard coded for now
-
-    @definitions[name] = material(value)
+    extend = instr['extend']
+    if extend
+      @definitions[name] = @definitions[extend].dup.merge(value)
+    else
+      @definitions[name] = value
+    end
   end
 
   def add_camera(instr)
@@ -79,33 +84,27 @@ class SceneLoader
 
   def add_plane(instr)
     @world.objects <<
-      Plane.new(transform: transform(instr['transform']),
-                material: material(instr['material']),
-                shadow: !!instr['shadow'])
+      plane(instr)
   end
 
   def add_sphere(instr)
     @world.objects <<
-      Sphere.new(transform: transform(instr['transform']),
-                 material: material(instr['material']),
-                 shadow: instr['shadow'].nil? ? true : instr['shadow'])
+      sphere(instr)
   end
 
   def add_cylinder(instr)
     @world.objects <<
-      Cylinder.new(min: instr['min'],
-                   max: instr['max'],
-                   closed: instr['closed'],
-                   transform: transform(instr['transform']),
-                   material: material(instr['material']),
-                   shadow: !!instr['shadow'])
+      cylinder(instr)
   end
 
   def add_cube(instr)
     @world.objects <<
-      Cube.new(transform: transform(instr['transform']),
-               material: material(instr['material']),
-               shadow: !!instr['shadow'])
+      cube(instr)
+  end
+
+  def add_csg(instr)
+    @world.objects <<
+      csg(instr)
   end
 
   def add_fir_branch(instr)
@@ -156,21 +155,18 @@ class SceneLoader
     return MyMatrix.identity unless v
 
     transform = MyMatrix.identity
-    v.each do |t|
-      case t.first
-        when 'scale'
-          transform = transform.scale(*t[1..-1])
-        when 'rotate-x'
-          transform = transform.rotate(:x, *t[1..-1])
-        when 'rotate-y'
-          transform = transform.rotate(:y, *t[1..-1])
-        when 'rotate-z'
-          transform = transform.rotate(:z, *t[1..-1])
-        when 'translate'
-          transform = transform.translate(*t[1..-1])
+    apply_transforms(v, transform)
+  end
 
+  def apply_transforms(v, transform)
+    v.each do |t|
+      case t
+        when String # Definition
+          transform = apply_transforms(@definitions[t], transform)
+        when Array
+          transform = apply_transform(t, transform)
         else
-          output.puts "Unknown transformation: #{t.first}"
+          output.puts("Unknown transform #{t}")
       end
     end
     transform
@@ -190,12 +186,93 @@ class SceneLoader
                      pattern: pattern(v['pattern'])
         )
       when String
-        @definitions[v]
+        Material.new(**@definitions[v].each_with_object({}){|(k,v), h| h[k.to_sym] = k.eql?("color") ? color(v) : v})
       else
         output.puts "Unknown material: #{v}"
-        nil
+        Material.default
     end
   end
+
+  private
+
+    def apply_transform(t, transform)
+      case t.first
+        when 'scale'
+          transform.scale(*t[1..-1])
+        when 'rotate-x'
+          transform.rotate(:x, *t[1..-1])
+        when 'rotate-y'
+          transform.rotate(:y, *t[1..-1])
+        when 'rotate-z'
+          transform.rotate(:z, *t[1..-1])
+        when 'translate'
+          transform.translate(*t[1..-1])
+        when 'shear'
+          transform.shear(*t[1..-1])
+        else
+          output.puts "Unknown transformation: #{t.first}"
+      end
+    end
+
+    def shape(instr, type=instr['type'])
+      case type
+        when 'cube'
+          cube(instr)
+        when 'sphere'
+          sphere(instr)
+        when 'csg'
+          csg(instr)
+        when 'group'
+          group(instr)
+        else
+          output.puts "Unknown type: #{type}"
+      end
+    end
+
+    def csg(instr)
+      CSG.new(shape(instr['left']),
+              instr['operation'].to_sym,
+              shape(instr['right']),
+              transform: transform(instr['transform']),
+              shadow:    !!instr['shadow'])
+    end
+
+    def group(instr)
+      Group.new(transform: transform(instr['transform']),
+                material:  material(instr['material']),
+                shadow:    !!instr['shadow']).tap do |group|
+        instr['children'].each do |child|
+          group.add_child(shape(child))
+        end
+      end
+    end
+
+    def plane(instr)
+      Plane.new(transform: transform(instr['transform']),
+                material:  material(instr['material']),
+                shadow:    !!instr['shadow'])
+    end
+
+    def sphere(instr)
+      Sphere.new(transform: transform(instr['transform']),
+                 material:  material(instr['material']),
+                 shadow:    instr['shadow'].nil? ? true : instr['shadow'])
+    end
+
+    def cube(instr)
+      Cube.new(transform: transform(instr['transform']),
+               material:  material(instr['material']),
+               shadow:    !!instr['shadow'])
+    end
+
+    def cylinder(instr)
+      Cylinder.new(min:       instr['min'],
+                   max:       instr['max'],
+                   closed:    instr['closed'],
+                   transform: transform(instr['transform']),
+                   material:  material(instr['material']),
+                   shadow:    !!instr['shadow'])
+    end
 end
 
 # SceneLoader.new("examples/christmas.yml").tap do |sl|
