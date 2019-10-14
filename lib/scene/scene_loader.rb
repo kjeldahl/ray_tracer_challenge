@@ -186,7 +186,7 @@ class SceneLoader
                      pattern: pattern(v['pattern'])
         )
       when String
-        Material.new(**@definitions[v].each_with_object({}){|(k,v), h| h[k.to_sym] = k.eql?("color") ? color(v) : v})
+        material(@definitions[v])
       else
         output.puts "Unknown material: #{v}"
         Material.default
