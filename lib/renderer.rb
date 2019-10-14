@@ -41,6 +41,9 @@ class Renderer
         threads << Thread.new do
           slice.each_with_index do |xy, idx|
             x, y = *xy
+            # # Debugging
+            # next unless x == 242 && y == 178
+
             ray = @camera.ray_for_pixel(x, y)
             canvas.write_pixel(x, y, @world.color_at(ray))
             # if idx % @camera.hsize == 0

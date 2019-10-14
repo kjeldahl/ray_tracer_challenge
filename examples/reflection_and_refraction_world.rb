@@ -29,9 +29,9 @@ class ReflectionAndRefractionWorld
   end
 
   def setup
-    SceneLoader.new("examples/refraction_sphere.yml").tap do |loader|
+    SceneLoader.new("examples/mirrors.yml").tap do |loader|
       loader.load
-      @renderer = Renderer.new(loader.camera, loader.world, dump_file: "refraction_sphere.ppm")
+      @renderer = Renderer.new(loader.camera, loader.world, dump_file: "mirrors.ppm")
     end
   end
 

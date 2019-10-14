@@ -1,0 +1,105 @@
+# ======================================================
+# the camera
+# ======================================================
+
+- add: camera
+  width: 300
+  height: 150
+  field-of-view: 1.152
+  from: [0, 3, -4]
+  #from: [0, 5, 0]
+  to: [0,1,0]
+  up: [0, 1, 0]
+
+# ======================================================
+# light sources
+# ======================================================
+
+- add: light
+  at: [-4.9, 4.9, -5]
+  intensity: [1, 1, 1]
+
+# ======================================================
+# define constants to avoid duplication
+# ======================================================
+
+- define: wall-material
+  value:
+    pattern:
+      type: checkers
+      colors:
+        - [0.25, 0.25, 0.25]
+        - [1,1,1]
+      transform:
+        - [ scale, 0.25, 0.25, 0.25 ]
+        - [ rotate-y, 1.5708 ]
+    ambient: 0
+    diffuse: 0.4
+    specular: 0
+#    reflective: 0.3
+
+# ======================================================
+# describe surroundings
+# ======================================================
+
+# the checkered floor
+- add: plane
+  #  transform:
+  #    - [ rotate-y, 0.31415 ]
+  material: wall-material
+
+# north wall
+- add: plane
+  transform:
+    - [ rotate-x, 1.5708 ] # rotate to vertical
+    - [ translate, 0, 0, 5 ]
+  material: wall-material
+
+# ======================================================
+# describe the elements of the scene
+# ======================================================
+
+- add: csg
+  transform:
+    - [ translate, 0, 1, 0]
+#    - [ rotate-y, 0.58525]
+  operation: difference
+  left:
+    type: csg
+    operation: difference
+    left:
+      type: cube
+      material:
+        color: [1,1,0]
+    right:
+      type: group
+      shadow: No
+      material:
+        color: [1.0, 1.0, 1.0]
+      transform:
+        - [ translate, 0, 0, -1]
+      children:
+        -
+          type: sphere
+          transform:
+            - [ scale, 0.20, 0.20, 0.20]
+            - [ translate, 0.70, 0.70, 0]
+        -
+          type: sphere
+          transform:
+            - [ scale, 0.20, 0.20, 0.20]
+            - [ translate, 0, 0, 0]
+        -
+          type: sphere
+          transform:
+            - [ scale, 0.20, 0.20, 0.20]
+            - [ translate, -0.70, -0.70, 0]
+  right:
+    type: sphere
+    shadow: false
+    material:
+      color: [1.0, 1.0, 1.0]
+    transform:
+      - [ scale, 0.20, 0.20, 0.20]
+      - [ translate, 0, 1, 0]
+

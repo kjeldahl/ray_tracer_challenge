@@ -1,0 +1,109 @@
+# ======================================================
+# the camera
+# ======================================================
+
+- add: camera
+  width: 300
+  height: 150
+  field-of-view: 1.152
+  from: [-2.6, 1.5, -3.9]
+  to: [-0.6, 1, -0.8]
+  up: [0, 1, 0]
+
+# ======================================================
+# light sources
+# ======================================================
+
+- add: light
+  at: [-4.9, 4.9, -1]
+  intensity: [1, 1, 1]
+
+# ======================================================
+# define constants to avoid duplication
+# ======================================================
+
+- define: wall-material
+  value:
+    pattern:
+      type: stripes
+      colors:
+        - [0.45, 0.45, 0.45]
+        - [0.55, 0.55, 0.55]
+      transform:
+        - [ scale, 0.25, 0.25, 0.25 ]
+        - [ rotate-y, 1.5708 ]
+    ambient: 0
+    diffuse: 0.4
+    specular: 0
+#    reflective: 0.3
+
+# ======================================================
+# describe the elements of the scene
+# ======================================================
+
+# the checkered floor
+- add: plane
+  transform:
+    - [ rotate-y, 0.31415 ]
+  material:
+    pattern:
+      type: checkers
+      colors:
+        - [0.35, 0.35, 0.35]
+        - [0.65, 0.65, 0.65]
+    specular: 0
+#    reflective: 0.4
+
+# the ceiling
+- add: plane
+  transform:
+    - [ translate, 0, 5, 0 ]
+  material:
+    color: [0.8, 0.8, 0.8]
+    ambient: 0.3
+    specular: 0
+
+# west wall
+- add: plane
+  transform:
+    - [ rotate-y, 1.5708 ] # orient texture
+    - [ rotate-z, 1.5708 ] # rotate to vertical
+    - [ translate, -5, 0, 0 ]
+  material: wall-material
+
+# east wall
+- add: plane
+  transform:
+    - [ rotate-y, 1.5708 ] # orient texture
+    - [ rotate-z, 1.5708 ] # rotate to vertical
+    - [ translate, 5, 0, 0 ]
+  material: wall-material
+
+# north wall
+- add: plane
+  transform:
+    - [ rotate-x, 1.5708 ] # rotate to vertical
+    - [ translate, 0, 0, 5 ]
+  material: wall-material
+
+# south wall
+- add: plane
+  transform:
+    - [ rotate-x, 1.5708 ] # rotate to vertical
+    - [ translate, 0, 0, -5 ]
+  material: wall-material
+
+# ----------------------
+# Teapot
+# ----------------------
+- add: obj-file
+  filename: 'obj/cow-nonormals.obj'
+  grouping: true
+  transform:
+    - [ scale, 0.3, 0.3, 0.3 ]
+    - [ rotate-y, 3.141 ]
+    - [ translate, 0, 1, 0 ]
+  material:
+    color: [0.545, 0.270, 0.075]
+    # 139,69,19
+
