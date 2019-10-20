@@ -18,7 +18,10 @@ class ObjLoader
         STDERR.puts "Ignoring the following lines"
         STDERR.puts parser.ignored_lines.map{|l,n| "#{n}: #{l}"}
       end
-      parser.obj_to_group
+      parser.obj_to_group.tap do |obj_group|
+        STDERR.puts(obj_group.bounds)
+        STDERR.puts "#{@group_nr} groups in OBJ file" if grouping
+      end
     end
   end
 
@@ -26,7 +29,7 @@ class ObjLoader
     @grouping = grouping
     @ignored_lines = []
     @current_group = "DefaultGroup"
-    group_nr = 0
+    @group_nr = 0
     create_new_group = grouping
 
     obj_file_content.split("\n").each_with_index do |line, line_number|
@@ -34,7 +37,7 @@ class ObjLoader
         when /\Av\s+#{NUMBER_REGEXP} #{NUMBER_REGEXP} #{NUMBER_REGEXP}\z/
           if create_new_group
             @current_group = "Grouping-#{group_nr}"
-            group_nr += 1
+            @group_nr += 1
             create_new_group = false
           end
           add_vertex(Float($1), Float($3), Float($5))
